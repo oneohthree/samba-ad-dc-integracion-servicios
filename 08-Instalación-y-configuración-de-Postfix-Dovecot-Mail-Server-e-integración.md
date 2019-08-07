@@ -147,8 +147,10 @@ postconf -e "virtual_transport = lmtp:unix:private/dovecot-lmtp"
 
 Definir usuarios virtuales de correo electrónico
 
-`postconf -e "smtpd_sender_login_maps = proxy:ldap:/etc/postfix/virtual_sender_login_maps.cf"`
-`nano /etc/postfix/virtual_sender_login_maps.cf`
+```
+postconf -e "smtpd_sender_login_maps = proxy:ldap:/etc/postfix/virtual_sender_login_maps.cf"
+nano /etc/postfix/virtual_sender_login_maps.cf
+```
 
 ```
 server_host = dc.example.tld
