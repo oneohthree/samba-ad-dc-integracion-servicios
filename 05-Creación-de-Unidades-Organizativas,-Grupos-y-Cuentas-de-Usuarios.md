@@ -4,7 +4,7 @@ Las unidades organizativas son subdivisiones jerárquicas que agrupan entidades,
 
 ## Creación de Unidades Organizativas (Organizational Units - OU)
 
-Crear nueva Unidad Organizativa.
+Crear nueva Unidad Organizativa
 
 ```
 samba-tool ou create 'OU=ACME,DC=example,DC=tld' --description='EXAMPLE.TLD Main Organizational Unit'
@@ -12,7 +12,7 @@ samba-tool ou create 'OU=ACME,DC=example,DC=tld' --description='EXAMPLE.TLD Main
 
 ## Creación de Grupos
 
-Crear nuevo Grupo de Usuarios perteneciente a la OU `ACME`.
+Crear nuevo Grupo de Usuarios perteneciente a la OU `ACME`
 
 ```
 samba-tool group add IT --groupou='OU=ACME' --description='IT Technical Support Group'
