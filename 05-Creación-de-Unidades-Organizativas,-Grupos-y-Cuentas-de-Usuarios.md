@@ -35,10 +35,10 @@ Crear nueva Cuenta de Usuario perteneciente a la OU `ACME`.
 
 * Añadir nuevo usuario a los grupos administrativos del AD DC.
 
-`samba-tool group addmembers 'Administrators' john.doe`
-`samba-tool group addmembers 'Domain Admins' john.doe`
-`samba-tool group addmembers 'Schema Admins' john.doe`
-`samba-tool group addmembers 'Enterprise Admins' john.doe`
+`samba-tool group addmembers 'Administrators' john.doe`  
+`samba-tool group addmembers 'Domain Admins' john.doe`  
+`samba-tool group addmembers 'Schema Admins' john.doe`  
+`samba-tool group addmembers 'Enterprise Admins' john.doe`  
 `samba-tool group addmembers 'Group Policy Creator Owners' john.doe`
 
 ## Creación de Políticas de Grupos (Group Policy Object - GPO)
@@ -55,8 +55,8 @@ En los sistemas operativos Windows, una Política de Grupo (Group Policy Object 
 
 * Comprobaciones
 
-`samba-tool gpo listall`
-`samba-tool gpo listcontainers {D8D44688-6D73-4850-8373-2B2B7294483A} -U 'administrator'%'P@s$w0rd.123'`
+`samba-tool gpo listall`  
+`samba-tool gpo listcontainers {D8D44688-6D73-4850-8373-2B2B7294483A} -U 'administrator'%'P@s$w0rd.123'`  
 `samba-tool gpo getlink 'OU=ACME,DC=example,DC=tld' -U 'administrator'%'P@s$w0rd.123'`
 
-NOTA: La modificación de los parámetros de las Políticas de Grupo se debe realizar mediante la aplicación gráfica `Group Policy Management` disponible en el paquete de herramientas administrativas `RSAT`.
+**NOTA**: La modificación de los parámetros de las Políticas de Grupo se debe realizar mediante la aplicación gráfica `Group Policy Management` disponible en el paquete de herramientas administrativas `RSAT`.
