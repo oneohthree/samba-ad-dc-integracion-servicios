@@ -40,7 +40,7 @@ dig -t SRV @example.tld _xmpp-server._tcp.example.tld
 
 ## Integración con Samba AD DC
 
-Crear nueva Cuenta de Usuario para el servicio `ejabberd`.
+Crear nueva Cuenta de Usuario para el servicio `ejabberd`
 
 ```
 samba-tool user create 'ejabberd' 'P@s$w0rd.012' \
@@ -52,7 +52,7 @@ samba-tool user create 'ejabberd' 'P@s$w0rd.012' \
 
 `samba-tool user setexpiry ejabberd --noexpiry`
 
-Definir cuentas de usuarios con acceso administrativo al servicio.
+Definir cuentas de usuarios con acceso administrativo al servicio
 
 `nano /etc/ejabberd/ejabberd.yml`
 
@@ -82,7 +82,7 @@ ldap_filter: "(&(objectClass=person)(!(userAccountControl:1.2.840.113556.1.4.803
 
 ## Compartiendo los roster de los usuarios
 
- Editar el fichero `/etc/ejabberd/ejabberd.yml` y añadir en la sección `MODULES`, debajo de la opción `mod_roster: {}`, el siguiente contenido:
+Editar el fichero `/etc/ejabberd/ejabberd.yml` y añadir en la sección `MODULES`, debajo de la opción `mod_roster: {}`, el siguiente contenido:
 
 ```
 mod_shared_roster_ldap:
@@ -125,7 +125,7 @@ mod_vcard_ldap:
       "Email": "EMAIL"
 ```
 
-Reiniciar el servicio y comprobar su correcto funcionamiento.
+Reiniciar el servicio y comprobar su correcto funcionamiento
 
 ```
 systemctl restart ejabberd
