@@ -57,11 +57,11 @@ Definir cuentas de usuarios con acceso administrativo al servicio.
 `nano /etc/ejabberd/ejabberd.yml`
 
 ```
-	acl:
-	  admin:
-	    user:
-		  - "administrator@example.tld"
-		  - "john.doe@example.tld"
+acl:
+  admin:
+    user:
+      - "administrator@example.tld"
+      - "john.doe@example.tld"
 ```
 
 Editar el fichero `/etc/ejabberd/ejabberd.yml` de forma tal que las opciones de la sección `AUTHENTICATION` queden como sigue:
