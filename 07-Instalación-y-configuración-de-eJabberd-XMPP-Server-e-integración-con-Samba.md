@@ -134,7 +134,7 @@ systemctl status ejabberd
 
 ## Comprobaciones
 
-Acceder a la web admnistrativa que provee eJabberd desde un navegador, loguearse con un usuario administrador y revisar los parámetros de configuración establecidos.
+Acceder a la web admnistrativa que provee eJabberd desde un navegador, iniciar sesión con un usuario administrador y revisar los parámetros de configuración establecidos.
 
 ```
 https://jb.example.tld:5280/admin
