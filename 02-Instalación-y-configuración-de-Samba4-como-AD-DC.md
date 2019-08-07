@@ -50,7 +50,7 @@ samba-tool domain provision \
     --adminpass='P@s$w0rd.123'
 ```
 
-Editar el fichero `/etc/samba/smb.conf` resultante.
+Editar el archivo de configuración de Samba resultante.
 
 `nano /etc/samba/smb.conf`
 
