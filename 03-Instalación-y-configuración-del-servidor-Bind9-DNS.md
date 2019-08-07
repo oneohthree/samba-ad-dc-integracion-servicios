@@ -8,7 +8,7 @@ Durante el aprovisionamiento se utilizó el `dns-backend=SAMBA_INTERNAL`, que pr
 
 Editar el fichero `/etc/samba/smb.conf` y en la sección `[global]` añadir las directivas:
 
-`server services = -dns`
+`server services = -dns`  
 `nsupdate command = /usr/bin/nsupdate -g`
 
 Comentar ó eliminar la directiva `dns forwarder = 127.0.0.1`.
@@ -17,16 +17,16 @@ Comentar ó eliminar la directiva `dns forwarder = 127.0.0.1`.
 
 * Definir Bind9 como `dns-backend`.
 
-`mv /etc/bind/named.conf.local{,.org}`
+`mv /etc/bind/named.conf.local{,.org}`  
 `nano /etc/bind/named.conf.local`
 
     dlz "samba4" {
         database "dlopen /usr/lib/x86_64-linux-gnu/samba/bind9/dlz_bind9_10.so";
     };
 
-`samba_upgradedns --dns-backend=BIND9_DLZ`
-`chown bind /var/lib/samba/private/dns.keytab`
-`mv /etc/bind/named.conf.options{,.org}`
+`samba_upgradedns --dns-backend=BIND9_DLZ` 
+`chown bind /var/lib/samba/private/dns.keytab`  
+`mv /etc/bind/named.conf.options{,.org}`  
 `nano /etc/bind/named.conf.options`
 
     options {
@@ -41,7 +41,7 @@ Comentar ó eliminar la directiva `dns forwarder = 127.0.0.1`.
         recursion yes;
     };
 
-`mv /etc/default/bind9{,.org}`
+`mv /etc/default/bind9{,.org}`  
 `nano /etc/default/bind9`
 
     RESOLVCONF=no
@@ -49,7 +49,7 @@ Comentar ó eliminar la directiva `dns forwarder = 127.0.0.1`.
 
 `nano /var/lib/samba/private/named.conf.update`
 
-    grant *.example.tld wildcard *.0.168.192.in-addr.arpa. PTR TXT;
+    grant *.example.tld wildcard *.0.168.192.in-addr.arpa. PTR TXT;  
     grant local-ddns zonesub any;
 
 * Reiniciar los servicios.
@@ -58,7 +58,7 @@ Comentar ó eliminar la directiva `dns forwarder = 127.0.0.1`.
 
 # Creación de zona inversa y registro PTR del servidor
 
-`samba-tool dns zonecreate localhost 0.168.192.in-addr.arpa -U 'administrator'%'P@s$w0rd.123'`
+`samba-tool dns zonecreate localhost 0.168.192.in-addr.arpa -U 'administrator'%'P@s$w0rd.123'`  
 `samba-tool dns add localhost 0.168.192.in-addr.arpa 1 PTR 'dc.example.tld.' -U 'administrator'%'P@s$w0rd.123'`
 
 # Comprobaciones
@@ -70,13 +70,13 @@ Comentar ó eliminar la directiva `dns forwarder = 127.0.0.1`.
 
 * Comprobar registros DNS necesarios para el funcionamiento correcto de Samba AD DC.
 
-`dig example.tld`
-`host -t A dc.example.tld`
-`host 192.168.0.1`
-`host -t SRV _kerberos._udp.example.tld`
+`dig example.tld`  
+`host -t A dc.example.tld`  
+`host 192.168.0.1`  
+`host -t SRV _kerberos._udp.example.tld`  
 `host -t SRV _ldap._tcp.example.tld`
 
 * Comprobar actualización automática de los registros DNS.
 
-`samba-tool dns query 127.0.0.1 example.tld @ ALL -U 'administrator'%'P@s$w0rd.123'`
+`samba-tool dns query 127.0.0.1 example.tld @ ALL -U 'administrator'%'P@s$w0rd.123'`  
 `samba_dnsupdate --verbose --all-names`
