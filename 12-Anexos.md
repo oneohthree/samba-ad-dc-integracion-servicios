@@ -698,7 +698,7 @@ plugin {
 
 ## Fichero de configuración prinicipal Roundcube+Samba AD DC
 
-`cat /opt/roundcube/config/config.inc.php
+`cat /opt/roundcube/config/config.inc.php`
 
 ```
 <?php
