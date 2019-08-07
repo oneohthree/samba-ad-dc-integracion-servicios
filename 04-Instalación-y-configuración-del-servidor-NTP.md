@@ -10,7 +10,7 @@ El servidor Samba AD DC actuará como servidor de tiempo (Network Time Protocol 
 
 ## Configuración del servidor NTP
 
-`mv /etc/ntp.conf{,.org}`
+`mv /etc/ntp.conf{,.org}`  
 `nano /etc/ntp.conf`
 
     driftfile /var/lib/ntp/ntp.drift
@@ -33,7 +33,7 @@ El servidor Samba AD DC actuará como servidor de tiempo (Network Time Protocol 
 
 * Establecer permisos.
 
-`chgrp ntp /var/lib/samba/ntp_signd`
+`chgrp ntp /var/lib/samba/ntp_signd`  
 `usermod -a -G staff ntp`
 
 * Reiniciar el servicio.
@@ -42,6 +42,6 @@ El servidor Samba AD DC actuará como servidor de tiempo (Network Time Protocol 
 
 # Comprobaciones
 
-`systemctl status ntp`
-`ntpdate -vqd ntp.tld`
+`systemctl status ntp`  
+`ntpdate -vqd ntp.tld`  
 `ntpq -p`
