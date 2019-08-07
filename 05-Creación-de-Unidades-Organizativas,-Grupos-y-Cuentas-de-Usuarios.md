@@ -47,11 +47,11 @@ En los sistemas operativos Windows, una Política de Grupo (Group Policy Object 
 
 * Crear Política de Grupo para contraseñas
 
-    samba-tool gpo create 'ACME Domain Password Policy' -U 'administrator'%'P@s$w0rd.123'
+`samba-tool gpo create 'ACME Domain Password Policy' -U 'administrator'%'P@s$w0rd.123'`
 
 * Vincular política creada a Unidad Organizativa
 
-    samba-tool gpo setlink 'OU=ACME,DC=example,DC=tld' {D8D44688-6D73-4850-8373-2B2B7294483A} -U 'administrator'%'P@s$w0rd.123'
+`samba-tool gpo setlink 'OU=ACME,DC=example,DC=tld' {D8D44688-6D73-4850-8373-2B2B7294483A} -U 'administrator'%'P@s$w0rd.123'`
 
 * Comprobaciones
 
