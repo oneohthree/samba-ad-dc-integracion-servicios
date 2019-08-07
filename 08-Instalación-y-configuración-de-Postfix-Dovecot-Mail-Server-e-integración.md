@@ -239,7 +239,7 @@ scope = sub
 query_filter = (&(objectClass=person)(otherMailbox=%s)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))
 result_attribute = userPrincipalName
 debuglevel = 0
-    
+```
 
 **NOTA**: El atributo `otherMailbox` puede editarse utilizando el comando `samba-tool user edit <username>` o mediante las herramientas administrativas GUI `RSAT` o `Apache Directory Studio`.
 
