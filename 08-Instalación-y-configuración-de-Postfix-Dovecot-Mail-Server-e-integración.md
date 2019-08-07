@@ -122,7 +122,7 @@ samba-tool group addmembers 'Management' sheldon
 samba-tool group addmembers 'Support' rajesh,sheldon
 ```
 
-## Configuración del servicio `postfix`
+## Configuración de Postfix
 
 Realizar copia de seguridad de los ficheros de configuración
 
@@ -278,7 +278,7 @@ Reiniciar el servicio. (Ver Anexos para una visión general de los ficheros de c
 systemctl restart postfix.service
 ```
 
-## Configuración del servicio `dovecot`
+## Configuración de Dovecot
 
 Realizar salva de seguridad del fichero de configuración principal
 
@@ -355,7 +355,7 @@ Reiniciar el servicio
 systemctl restart dovecot.service
 ```
 
-## Configuración del servicio `roundcube`
+## Configuración de Roundcube
 
 Integrar con Samba AD DC. (Ver Anexos para una visión general del fichero de configuración)
 
