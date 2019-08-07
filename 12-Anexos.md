@@ -4,6 +4,8 @@
 
 `cat /etc/squid/squid.conf`
 
+
+```
 # WELCOME TO SQUID 3.5.x
 # ------------------------
 
@@ -152,11 +154,13 @@ dns_nameservers proxy.tld
 # ---------------------------------------------------------------------
 forwarded_for on
 cachemgr_passwd MyS3cr3tP@s$w0rd all
+```
 
 ## Fichero de configuración prinicipal eJabberd+Samba AD DC
 
 `cat /etc/ejabbed/ejabberd.yml`
 
+```
 ###'  ejabberd configuration file
 
 ###.  =======
@@ -359,11 +363,13 @@ modules:
       "Email": "EMAIL"
   mod_version: {}
 allow_contrib_modules: true
+```
 
 ## Ficheros de configuración prinicipal Postfix+Samba AD DC
 
 `cat /etc/postfix/main.cf`
 
+```
 ### MAIN
 mydomain = example.tld
 myhostname = mail.$mydomain
@@ -511,9 +517,11 @@ smtpd_data_restrictions =
 ### BCC
 enable_original_recipient = no
 always_bcc = archive@example.tld
+```
 
 `cat /etc/postfix/master.cf`
 
+```
 smtp      inet  n       -       y       -       -       smtpd
     -o smtpd_tls_cert_file=/etc/ssl/certs/exampleMail.crt
     -o smtpd_tls_key_file=/etc/ssl/private/exampleMail.key
@@ -562,11 +570,13 @@ mailman   unix  -       n       n       -       -       pipe
   ${nexthop} ${user}
 dovecot   unix  -       n       n       -       -       pipe
     flags=DRhu user=vmail:vmail argv=/usr/lib/dovecot/dovecot-lda -f ${sender} -d ${recipient}
+```
 
 ## Fichero de configuración prinicipal Dovecot+Samba AD DC
 
 `cat /etc/dovecot/dovecot.conf`
 
+```
 auth_default_realm = example.tld
 auth_mechanisms = plain login
 disable_plaintext_auth = yes
@@ -684,11 +694,13 @@ plugin {
     quota_grace = 10%%
     quota_exceeded_message = ESTE BUZON HA EXCEDIDO LA CUOTA ASIGNADA
 }
+```
 
 ## Fichero de configuración prinicipal Roundcube+Samba AD DC
 
 `cat /opt/roundcube/config/config.inc.php
 
+```
 <?php
 // Database
 $config['db_dsnw'] = 'DBDRIVER://DBUSER:DBUSERPASSWD@DBHOST/DBNAME';
@@ -824,13 +836,15 @@ $config['ldap_public']["global_ldap_abook"] = array(
         ),
     ),
 );
+```
 
 ## Ficheros de publicación web Roundcube
 
-### Servidor Web Nginx.
+### Servidor Web Nginx
 
 `cat /etc/nginx/sites-enabled/roundcube`
 
+```
 proxy_cache_path /tmp/cache keys_zone=cache:10m levels=1:2 inactive=600s max_size=100m;
 server {
     listen 80;
@@ -908,11 +922,13 @@ server {
     access_log /var/log/nginx/roundcube_access.log;
     error_log /var/log/nginx/roundcube_error.log;
 }
+```
 
 ### Servidor Web Apache
 
 `cat /etc/apache2/sites-enabled/roundcube.conf`
 
+```
 <VirtualHost *:80>
     RewriteEngine on
     RewriteCond %{HTTPS} =off
@@ -955,3 +971,4 @@ server {
         </Directory>
     </VirtualHost>
 </IfModule>
+```
