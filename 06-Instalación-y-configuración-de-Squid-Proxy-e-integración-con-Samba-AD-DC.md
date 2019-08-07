@@ -1,18 +1,19 @@
 # Instalación y configuración de Squid Proxy e integración con Samba AD DC
 
-* Crear registros DNS.
+Crear registros DNS
+
 ```
 samba-tool dns add localhost example.tld proxy A '192.168.0.2' -U 'administrator'%'P@s$w0rd.123'
 samba-tool dns add localhost 0.168.192.in-addr.arpa 2 PTR 'proxy.example.tld.' -U 'administrator'%'P@s$w0rd.123'
 ```
 
-Crear nueva Unidad Organizativa `Proxy` para grupos de navegación, perteneciente a `ACME`.
+Crear nueva Unidad Organizativa `Proxy` para grupos de navegación, perteneciente a `ACME`
 
 ```
 samba-tool ou create 'OU=Proxy,OU=ACME,DC=example,DC=tld' --description='Proxy Groups Organizational Unit'
 ```
 
-Crear nuevos grupos de navegación pertenecientes a la OU `Proxy`.
+Crear nuevos grupos de navegación pertenecientes a la OU `Proxy`
 
 ```
 samba-tool group add Intranet --groupou='OU=Proxy,OU=ACME' --description='.CU Access Group'
@@ -20,7 +21,7 @@ samba-tool group add Internet --groupou='OU=Proxy,OU=ACME' --description='Intern
 samba-tool group add Unrestricted --groupou='OU=Proxy,OU=ACME' --description='Unrestricted Access Group'
 ```
 
-Crear nuevos usuarios de navegación pertenecientes a la OU `ACME`.
+Crear nuevos usuarios de navegación pertenecientes a la OU `ACME`
 
 ```
 samba-tool user create 'sheldon' 'Amy*123' \
@@ -51,7 +52,7 @@ samba-tool user create 'rajesh' 'Howard*789' \
     --mail='rajesh@example.tld'
 ```
 
-Añadir usuarios a los grupos creados.
+Añadir usuarios a los grupos creados
 
 ```
 samba-tool group addmembers 'Intranet' sheldon
@@ -66,16 +67,6 @@ export DEBIAN_FRONTEND=noninteractive
 apt install squid krb5-user msktutil libsasl2-modules-gssapi-mit
 unset DEBIAN_FRONTEND
 ```
-
-Detener el servicio y remplazar el fichero de configuración por defecto de Squid.
-
-```
-systemctl stop squid
-mv /etc/squid/squid.conf{,.org}
-nano /etc/squid/squid.conf
-```
-
-TODO **REEMPLAZAR POR ANEXO**
 
 ## Configuración de Kerberos
 
@@ -92,7 +83,7 @@ nano /etc/krb5.conf
     clockskew = 3600
 ```
 
-Generar archivo keytab.
+Generar archivo keytab
 
 ```
 msktutil -c -b "CN=Computers" \
@@ -105,21 +96,21 @@ msktutil -c -b "CN=Computers" \
     --verbose
 ```
 
-Establecer los permisos del archivo keytab.
+Establecer los permisos del archivo keytab
 
 ```
 chown root:proxy /etc/krb5.keytab
 chmod 640 /etc/krb5.keytab
 ```
 
-Comprobar que `Kerberos` funciona.
+Comprobar que Kerberos funciona
 
 ```
 kinit -k HTTP/proxy.example.tld
 klist
 ```
 
-Comprobar que la cuenta de host se actualice correctamente.
+Comprobar que la cuenta de host se actualice correctamente
 
 ```
 msktutil --auto-update --verbose --computer-name proxy
@@ -135,7 +126,7 @@ Agregar en crontab
 
 ## Integración con Samba AD DC
 
-Crear nueva Cuenta de Usuario para el servicio `squid3`.
+Crear nueva Cuenta de Usuario para el servicio `squid3`
 
 Esta cuenta sería usada para propiciar la autenticación básica LDAP en caso de fallar Kerberos ó para uso de gestores de descargas no compatibles con Kerberos ó en aquellas estaciones que no están unidas al dominio.
 
@@ -147,11 +138,13 @@ samba-tool user create 'squid3' 'P@s$w0rd.789' \
     --description='Squid3 Proxy Service Account'
 ```
 
-`samba-tool user setexpiry squid3 --noexpiry`
+```
+samba-tool user setexpiry squid3 --noexpiry
+```
 
 Editar el fichero `/etc/squid/squid.conf` y agregar los métodos de autenticación.
 
- `nano /etc/squid/squid.conf`
+`nano /etc/squid/squid.conf`
 
 ```
 ...
@@ -179,7 +172,7 @@ leonard
 OK
 ```
 
-Usando autenticación básica LDAP.
+Usando autenticación básica LDAP
 
 ```
 /usr/lib/squid/basic_ldap_auth -R -b "dc=example,dc=tld" \
