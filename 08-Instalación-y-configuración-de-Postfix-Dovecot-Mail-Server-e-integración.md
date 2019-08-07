@@ -205,8 +205,9 @@ Definir listas y aliases virtuales de correo electrónico
 
 ```
 postconf -e "virtual_alias_maps = proxy:ldap:/etc/postfix/virtual_list_maps.cf, proxy:ldap:/etc/postfix/virtual_alias_maps.cf"
-nano /etc/postfix/virtual_list_maps.cf
 ```
+
+`nano /etc/postfix/virtual_list_maps.cf`
 
 ```
 server_host = dc.example.tld
