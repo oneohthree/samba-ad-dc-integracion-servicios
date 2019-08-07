@@ -2,9 +2,11 @@
 
 ## Instalación de paquetes necesarios
 
-`export DEBIAN_FRONTEND=noninteractive`
-`apt install postfix-pcre postfix-ldap dovecot-core dovecot-ldap dovecot-pop3d dovecot-imapd dovecot-lmtpd ldap-utils mailutils`
-`unset DEBIAN_FRONTEND`
+```
+export DEBIAN_FRONTEND=noninteractive
+apt install postfix-pcre postfix-ldap dovecot-core dovecot-ldap dovecot-pop3d dovecot-imapd dovecot-lmtpd ldap-utils mailutils
+unset DEBIAN_FRONTEND
+```
 
 ## Configuración del sistema
 
