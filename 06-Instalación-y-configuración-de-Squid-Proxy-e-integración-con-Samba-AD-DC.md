@@ -2,18 +2,17 @@
 
 * Crear registros DNS.
 
-`samba-tool dns add localhost example.tld proxy A '192.168.0.2' -U 'administrator'%'P@s$w0rd.123'`
+`samba-tool dns add localhost example.tld proxy A '192.168.0.2' -U 'administrator'%'P@s$w0rd.123'`  
 `samba-tool dns add localhost 0.168.192.in-addr.arpa 2 PTR 'proxy.example.tld.' -U 'administrator'%'P@s$w0rd.123'`
 
-* Crear nueva Unidad Organizativa `Proxy` para grupos de navegación, per-
-  teneciente a `ACME`.
+* Crear nueva Unidad Organizativa `Proxy` para grupos de navegación, perteneciente a `ACME`.
 
 `samba-tool ou create 'OU=Proxy,OU=ACME,DC=example,DC=tld' --description='Proxy Groups Organizational Unit'`
 
 * Crear nuevos grupos de navegación pertenecientes a la OU `Proxy`.
 
-`samba-tool group add Intranet --groupou='OU=Proxy,OU=ACME' --description='.CU Access Group'`
-`samba-tool group add Internet --groupou='OU=Proxy,OU=ACME' --description='Internet Access Group'`
+`samba-tool group add Intranet --groupou='OU=Proxy,OU=ACME' --description='.CU Access Group'`  
+`samba-tool group add Internet --groupou='OU=Proxy,OU=ACME' --description='Internet Access Group'`  
 `samba-tool group add Unrestricted --groupou='OU=Proxy,OU=ACME' --description='Unrestricted Access Group'`
 
 * Crear nuevos usuarios de navegación pertenecientes a la OU `ACME`.
@@ -47,27 +46,27 @@
 
 * Añadir usuarios a los grupos creados.
 
-`samba-tool group addmembers 'Intranet' sheldon`
-`samba-tool group addmembers 'Intranet' sheldon,leonard`
+`samba-tool group addmembers 'Intranet' sheldon`  
+`samba-tool group addmembers 'Intranet' sheldon,leonard`  
 `samba-tool group addmembers 'Unrestricted' rajesh`
 
 ## Instalación de paquetes necesarios
 
-`export DEBIAN_FRONTEND=noninteractive`
-`apt install squid krb5-user msktutil libsasl2-modules-gssapi-mit`
+`export DEBIAN_FRONTEND=noninteractive`  
+`apt install squid krb5-user msktutil libsasl2-modules-gssapi-mit`  
 `unset DEBIAN_FRONTEND`
 
 Detener el servicio y remplazar el fichero de configuración por defecto de Squid.
 
-`systemctl stop squid`
-`mv /etc/squid/squid.conf{,.org}`
+`systemctl stop squid`  
+`mv /etc/squid/squid.conf{,.org}` 
 `nano /etc/squid/squid.conf`
 
 **REEMPLAZAR POR ANEXO**
 
 ## Configuración de Kerberos
 
-`mv /etc/krb5.conf{,.org}`
+`mv /etc/krb5.conf{,.org}`  
 `nano /etc/krb5.conf`
 
     [libdefaults]
@@ -89,12 +88,12 @@ Detener el servicio y remplazar el fichero de configuración por defecto de Squi
 
 * Establecer los permisos del archivo keytab.
 
-`chown root:proxy /etc/krb5.keytab`
+`chown root:proxy /etc/krb5.keytab`  
 `chmod 640 /etc/krb5.keytab`
 
 * Comprobar que `Kerberos` funciona.
 
-`kinit -k HTTP/proxy.example.tld`
+`kinit -k HTTP/proxy.example.tld`  
 `klist`
 
 * Comprobar que la cuenta de host se actualice correctamente.
