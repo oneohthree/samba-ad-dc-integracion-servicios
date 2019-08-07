@@ -6,17 +6,16 @@ La distribución de Debian 9 Stretch cuenta en su repositorio de paquetes con la
 
 Deshabilitar la interacción de configuración y proceder con la instalación de paquetes.
 
-`export DEBIAN_FRONTEND=noninteractive`
-`apt install samba krb5-user winbind libnss-winbind net-tools`
-samba winbind libnss-winbind krb5-user
+`export DEBIAN_FRONTEND=noninteractive`  
+`apt install samba krb5-user winbind libnss-winbind net-tools samba winbind libnss-winbind krb5-user`  
 `unset DEBIAN_FRONTEND`
 
 ## Preparación del aprovisionamiento
 
 Detener y deshabilitar todos los servicios relacionados con Samba.
 
-`systemctl stop samba-ad-dc smbd nmbd winbind`
-`systemctl disable samba-ad-dc smbd nmbd winbind`
+`systemctl stop samba-ad-dc smbd nmbd winbind`  
+`systemctl disable samba-ad-dc smbd nmbd winbind`  
 
 Opcionalmente se puede hacer una copia del archivo de configuración inicial de Samba ya que se sobrescribe durante el aprovisionamiento.
 
@@ -64,12 +63,9 @@ Editar el fichero `/etc/samba/smb.conf` resultante.
         create mask = 0700
         directory mask = 0644
 
-La directiva `ldap server require strong auth = no` en la sección
-`[global]` se utiliza para permitir el acceso por el puerto `tcp\389`.
+La directiva `ldap server require strong auth = no` en la sección `[global]` se utiliza para permitir el acceso por el puerto `tcp\389`.
 
-Las directivas `create mask = 0700` y `directory mask = 0644` en las
-secciones `[netlogon]` y `[sysvol]` son para la correcta asignación
-de permisos tanto a ficheros como directorios.
+Las directivas `create mask = 0700` y `directory mask = 0644` en las secciones `[netlogon]` y `[sysvol]` son para la correcta asignación de permisos tanto a ficheros como directorios.
 
 ## Configuración de `Kerberos`
 
@@ -77,14 +73,14 @@ Durante el aprovisionamiento, Samba crea un archivo de configuración con los va
 
 Utilizar la configuración de `Kerberos` generada durante el aprovisionamiento.
 
-`mv /etc/krb5.conf{,.org}`
+`mv /etc/krb5.conf{,.org}`  
 `ln -s /var/lib/samba/private/krb5.conf /etc/krb5.conf`
 
 Iniciar, verificar el estado y habilitar el servicio de Samba AD DC.
 
-`systemctl unmask samba-ad-dc`
-`systemctl start samba-ad-dc`
-`systemctl status samba-ad-dc`
+`systemctl unmask samba-ad-dc`  
+`systemctl start samba-ad-dc`  
+`systemctl status samba-ad-dc` 
 `systemctl enable samba-ad-dc`
 
 Evitar que la cuenta del usuario `Administrator` expire.
@@ -101,8 +97,8 @@ Reiniciar el servidor.
 
 * Resolución del nombre de domino, `FQDN` y `hostname` por la dirección IP estática.
 
-`ping -c4 example.tld`
-`ping -c4 dc.example.tld`
+`ping -c4 example.tld`  
+`ping -c4 dc.example.tld`  
 `ping -c4 dc`
 
 * Solicitar ticket de `Kerberos`.
