@@ -89,6 +89,27 @@ mv /etc/krb5.conf{,.org}
 ln -s /var/lib/samba/private/krb5.conf /etc/krb5.conf
 ```
 
+Editar configuración de Kerberos
+
+`nano /etc/krb5.conf`
+
+```
+[libdefaults]
+    default_realm = EXAMPLE.TLD
+    dns_lookup_realm = false
+    dns_lookup_kdc = true
+[realms]
+    EXAMPLE.TLD = {
+        kdc = dc.example.tld
+        master_kdc = dc.example.tld
+        admin_server = dc.example.tld
+        default_domain = example.tld
+    }
+[domain_realm]
+    .example.tld = EXAMPLE.TLD
+    example.tld = EXAMPLE.TLD
+```
+
 Iniciar, verificar el estado y habilitar el servicio de Samba AD DC.
 
 ```
