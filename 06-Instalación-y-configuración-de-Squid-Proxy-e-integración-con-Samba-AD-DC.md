@@ -149,7 +149,7 @@ Editar el fichero `/etc/squid/squid.conf` y agregar los m√©todos de autenticaci√
 ```
 ...
 # Kerberos authentication
-auth_param negotiate program /usr/lib/squid/negotiate_kerberos_auth -r -s GSS_C_NO_NAME
+auth_param negotiate program /usr/lib/squid/negotiate_kerberos_auth -r -s GSS_C_NO_NAME -k /etc/krb5.keytab
 auth_param negotiate children 20 startup=0 idle=1
 auth_param negotiate keep_alive off
 
