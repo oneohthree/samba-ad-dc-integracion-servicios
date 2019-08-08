@@ -8,7 +8,7 @@ Deshabilitar la interacción de configuración y proceder con la instalación de
 
 ```
 export DEBIAN_FRONTEND=noninteractive
-apt install samba krb5-user winbind libnss-winbind net-tools samba winbind libnss-winbind krb5-user
+apt install samba krb5-user winbind libnss-winbind net-tools
 unset DEBIAN_FRONTEND
 ```
 
