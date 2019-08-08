@@ -81,6 +81,16 @@ nano /etc/krb5.conf
     dns_lookup_realm = false
     dns_lookup_kdc = true
     clockskew = 3600
+[realms]
+    EXAMPLE.TLD = {
+        kdc = dc.example.tld
+        master_kdc = dc.example.tld
+        admin_server = dc.example.tld
+        default_domain = example.tld
+    }
+[domain_realm]
+    .example.tld = EXAMPLE.TLD
+    example.tld = EXAMPLE.TLD
 ```
 
 Generar archivo keytab
@@ -197,4 +207,6 @@ OK
 
 Analizando trazas de navegación
 
-`tailf -n100 /var/log/squid/access.log`
+```
+tailf -n100 /var/log/squid/access.log
+```
