@@ -1,4 +1,4 @@
-TODO: ntp vs chrony
+`TODO: ntpd vs chrony`
 
 # Instalación y configuración del servidor NTP
 
@@ -6,42 +6,54 @@ El servidor Samba AD DC actuará como servidor de tiempo (Network Time Protocol 
 
 ## Instación de paquetes necesarios
 
-`apt install ntpdate ntp`
+```
+apt install ntpdate ntp
+```
 
 ## Configuración del servidor NTP
 
-`mv /etc/ntp.conf{,.org}`  
-`nano /etc/ntp.conf`
+```
+mv /etc/ntp.conf{,.org}
+nano /etc/ntp.conf
+```
 
-    driftfile /var/lib/ntp/ntp.drift
-    logfile /var/log/ntpd.log
-    statistics loopstats peerstats clockstats
-    filegen loopstats file loopstats type day enable
-    filegen peerstats file peerstats type day enable
-    filegen clockstats file clockstats type day enable
-    server 127.127.1.1
-    fudge 127.127.1.1 stratum 12
-    server ntp.tld iburst prefer
-    ntpsigndsocket /var/lib/samba/ntp_signd
-    restrict -4 default kod notrap nomodify nopeer noquery mssntp
-    restrict default mssntp
-    restrict ntp.example.tld mask 255.255.255.255 nomodify notrap nopeer noquery
-    restrict 127.0.0.1
-    restrict ::1
-    restrict source notrap nomodify noquery
-    broadcast 192.168.0.255
+```
+driftfile /var/lib/ntp/ntp.drift
+logfile /var/log/ntpd.log
+statistics loopstats peerstats clockstats
+filegen loopstats file loopstats type day enable
+filegen peerstats file peerstats type day enable
+filegen clockstats file clockstats type day enable
+server 127.127.1.1
+fudge 127.127.1.1 stratum 12
+server ntp.tld iburst prefer
+ntpsigndsocket /var/lib/samba/ntp_signd
+restrict -4 default kod notrap nomodify nopeer noquery mssntp
+restrict default mssntp
+restrict ntp.example.tld mask 255.255.255.255 nomodify notrap nopeer noquery
+restrict 127.0.0.1
+restrict ::1
+restrict source notrap nomodify noquery
+broadcast 192.168.0.255
+```
 
-* Establecer permisos.
+Establecer permisos
 
-`chgrp ntp /var/lib/samba/ntp_signd`  
-`usermod -a -G staff ntp`
+```
+chgrp ntp /var/lib/samba/ntp_signd
+usermod -a -G staff ntp
+```
 
-* Reiniciar el servicio.
+Reiniciar el servicio
 
-`systemctl restart ntp`
+```
+systemctl restart ntp
+```
 
 # Comprobaciones
 
-`systemctl status ntp`  
-`ntpdate -vqd ntp.tld`  
-`ntpq -p`
+```
+systemctl status ntp
+ntpdate -vqd ntp.tld
+ntpq -p
+```
