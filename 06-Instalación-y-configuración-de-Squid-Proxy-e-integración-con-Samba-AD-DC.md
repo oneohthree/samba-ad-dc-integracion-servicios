@@ -96,6 +96,8 @@ nano /etc/krb5.conf
 Generar archivo keytab
 
 ```
+kinit Administrator@EXAMPLE.TLD
+
 msktutil -c -b "CN=Computers" \
     -s HTTP/proxy.example.tld \
     -h proxy.example.tld \
