@@ -742,7 +742,7 @@ apt install squid krb5-user msktutil libsasl2-modules-gssapi-mit
 unset DEBIAN_FRONTEND
 ```
 
-Detener el servicio y remplazar el fichero de configuración por defecto de Squid. (Ver Anexo).
+Detener el servicio y remplazar el fichero de configuración por defecto de Squid.
 
 ```
 systemctl stop squid
@@ -1376,7 +1376,7 @@ postmap -q everyone@example.tld ldap:/etc/postfix/virtual_list_maps.cf
 postmap -q postmaster@example.tld ldap:/etc/postfix/virtual_alias_maps.cf
 ```
 
-Reiniciar el servicio. (Ver Anexos para una visión general de los ficheros de configuración).
+Reiniciar el servicio.
 
 ```
 systemctl restart postfix.service
@@ -3791,7 +3791,7 @@ apt install squid krb5-user msktutil libsasl2-modules-gssapi-mit
 unset DEBIAN_FRONTEND
 ```
 
-Detener el servicio y remplazar el fichero de configuración por defecto de Squid. (Ver Anexo 12.1).
+Detener el servicio y remplazar el fichero de configuración por defecto de Squid.
 
 ```
 systemctl stop squid
@@ -4432,7 +4432,7 @@ postmap -q everyone@example.tld ldap:/etc/postfix/virtual_list_maps.cf
 postmap -q postmaster@example.tld ldap:/etc/postfix/virtual_alias_maps.cf
 ```
 
-Reiniciar el servicio. (Ver Anexos para una visión general de los ficheros de configuración).
+Reiniciar el servicio.
 
 ```
 systemctl restart postfix.service
@@ -4476,7 +4476,7 @@ exit 0
 chmod +x /usr/local/bin/quota-warning
 ```
 
-### Integrar con Samba AD DC. (Ver Anexos para una visión general del fichero de configuración).
+### Integrar con Samba AD DC.
 
 `nano /etc/dovecot/dovecot.conf`
 
@@ -4519,7 +4519,7 @@ systemctl restart dovecot.service
 
 ### Configuración del servicio Roundcube
 
-Integrar con Samba AD DC. (Ver Anexos para una visión general del fichero de configuración).
+## Integración con Samba AD DC
 
 `nano /opt/roundcube/config/config.inc.php`
 
@@ -6825,7 +6825,7 @@ apt install squid krb5-user msktutil libsasl2-modules-gssapi-mit
 unset DEBIAN_FRONTEND
 ```
 
-Detener el servicio y remplazar el fichero de configuración por defecto de Squid. (Ver Anexo 12.1).
+Detener el servicio y remplazar el fichero de configuración por defecto de Squid.
 
 ```
 systemctl stop squid
@@ -7466,7 +7466,7 @@ postmap -q everyone@example.tld ldap:/etc/postfix/virtual_list_maps.cf
 postmap -q postmaster@example.tld ldap:/etc/postfix/virtual_alias_maps.cf
 ```
 
-Reiniciar el servicio. (Ver Anexos para una visión general de los ficheros de configuración).
+Reiniciar el servicio.
 
 ```
 systemctl restart postfix.service
@@ -7510,7 +7510,7 @@ exit 0
 chmod +x /usr/local/bin/quota-warning
 ```
 
-### Integrar con Samba AD DC. (Ver Anexos para una visión general del fichero de configuración).
+### Integrar con Samba AD DC.
 
 `nano /etc/dovecot/dovecot.conf`
 
@@ -7553,7 +7553,7 @@ systemctl restart dovecot.service
 
 ### Configuración del servicio Roundcube
 
-Integrar con Samba AD DC. (Ver Anexos para una visión general del fichero de configuración).
+Integrar con Samba AD DC.
 
 `nano /opt/roundcube/config/config.inc.php`
 
