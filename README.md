@@ -1119,9 +1119,7 @@ Para Debian 9 Stretch.
 
 ```
 openssl req -x509 -nodes -days 3650 -sha512 \
-    -subj "/C=CU/ST=Provincia/L=Ciudad/\
-        O=EXAMPLE TLD/OU=IT/CN=mail.example.tld/\
-        emailAddress=postmaster@example.tld/" \
+    -subj "/C=CU/ST=Provincia/L=Ciudad/O=EXAMPLE TLD/OU=IT/CN=mail.example.tld/emailAddress=postmaster@example.tld/" \
     -reqexts SAN -extensions SAN \-config <(cat /etc/ssl/openssl.cnf \
         <(printf "\n[SAN]\nsubjectAltName=DNS:smtp.example.tld,\
         DNS:pop3.example.tld,DNS:imap.example.tld,\
@@ -1135,9 +1133,7 @@ Para Debian 10 Buster.
 
 ```
 openssl req -x509 -nodes -days 3650 -sha512 \
-    -subj "/C=CU/ST=Provincia/L=Ciudad/\
-        O=EXAMPLE TLD/OU=IT/CN=mail.example.tld/\
-        emailAddress=postmaster@example.tld/" \
+    -subj "/C=CU/ST=Provincia/L=Ciudad/O=EXAMPLE TLD/OU=IT/CN=mail.example.tld/emailAddress=postmaster@example.tld/" \
     -addext "subjectAltName = DNS:smtp.example.tld,\
         DNS:pop3.example.tld,DNS:imap.example.tld,\
         DNS:webmail.example.tld,IP:192.168.0.4" \
