@@ -64,14 +64,14 @@
 - [Anexos](#anexos)
   - [Fichero de configuración prinicipal Squid+Samba AD DC](#fichero-de-configuración-prinicipal-squidsamba-ad-dc)
     - [Debian 9 Stretch Squid 3.5](#debian-9-stretch-squid-35)
-    - [Debian 10 Buster Squid 4.6.](#debian-10-buster-squid-46)
+    - [Debian 10 Buster Squid 4.6](#debian-10-buster-squid-46)
   - [Fichero de configuración prinicipal eJabberd+Samba AD DC](#fichero-de-configuración-prinicipal-ejabberdsamba-ad-dc)
     - [Debian 9 Stretch eJabberd 16.09](#debian-9-stretch-ejabberd-1609)
     - [Debian 10 Buster eJabberd 18.12](#debian-10-buster-ejabberd-1812)
   - [Ficheros de configuración prinicipal Postfix+Samba AD DC](#ficheros-de-configuración-prinicipal-postfixsamba-ad-dc)
   - [Fichero de configuración prinicipal Dovecot+Samba AD DC](#fichero-de-configuración-prinicipal-dovecotsamba-ad-dc)
     - [Debian 9 Stretch Dovecot 2.2](#debian-9-stretch-dovecot-22)
-  - [Debian 10 Buster Dovecot 2.3.](#debian-10-buster-dovecot-23)
+  - [Debian 10 Buster Dovecot 2.3](#debian-10-buster-dovecot-23)
   - [Fichero de configuración prinicipal Roundcube+Samba AD DC](#fichero-de-configuración-prinicipal-roundcubesamba-ad-dc)
   - [Ficheros de publicación web Roundcube](#ficheros-de-publicación-web-roundcube)
     - [Servidor Web Nginx](#servidor-web-nginx)
@@ -742,7 +742,7 @@ apt install squid krb5-user msktutil libsasl2-modules-gssapi-mit
 unset DEBIAN_FRONTEND
 ```
 
-Detener el servicio y remplazar el fichero de configuración por defecto de Squid. (Ver Anexo 12.1).
+Detener el servicio y remplazar el fichero de configuración por defecto de Squid. (Ver Anexo).
 
 ```
 systemctl stop squid
@@ -1783,7 +1783,7 @@ forwarded_for on
 cachemgr_passwd MyS3cr3tP@s$w0rd all
 ```
 
-#### Debian 10 Buster Squid 4.6.
+#### Debian 10 Buster Squid 4.6
 
 `cat /etc/squid/squid.conf`
 
