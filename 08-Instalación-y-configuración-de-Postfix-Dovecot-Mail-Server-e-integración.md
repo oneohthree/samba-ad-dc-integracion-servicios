@@ -19,9 +19,27 @@ useradd -m -g 5000 -u 5000 -d /var/vmail -s /usr/sbin/nologin -c "Virtual Mailbo
 
 Crear certificado de seguridad TLS/SSL y asignar permisos
 
+Para Debian 9 Stretch.
+
 ```
-openssl req -x509 -nodes -days 3650 -sha512 \
-    -subj "/C=CU/ST=Provincia/L=Ciudad/\
+`openssl req -x509 -nodes -days 3650 -sha512 \
+    -subj "/C=CU/ST=Isla de la Juventud/L=Nueva Gerona/\
+        O=EXAMPLE TLD/OU=IT/CN=mail.example.tld/\
+        emailAddress=postmaster@example.tld/" \
+    -reqexts SAN -extensions SAN \-config <(cat /etc/ssl/openssl.cnf \
+        <(printf "\n[SAN]\nsubjectAltName=DNS:smtp.example.tld,\
+        DNS:pop3.example.tld,DNS:imap.example.tld,\
+        DNS:webmail.example.tld,IP:192.168.0.4")) \
+    -newkey rsa:4096 \
+    -out /etc/ssl/certs/exampleMail.crt \
+    -keyout /etc/ssl/private/exampleMail.key`
+```
+
+Para Debian 10 Buster.
+
+```
+`openssl req -x509 -nodes -days 3650 -sha512 \
+    -subj "/C=CU/ST=Isla de la Juventud/L=Nueva Gerona/\
         O=EXAMPLE TLD/OU=IT/CN=mail.example.tld/\
         emailAddress=postmaster@example.tld/" \
     -addext "subjectAltName = DNS:smtp.example.tld,\
@@ -29,7 +47,7 @@ openssl req -x509 -nodes -days 3650 -sha512 \
         DNS:webmail.example.tld,IP:192.168.0.4" \
     -newkey rsa:4096 \
     -out /etc/ssl/certs/exampleMail.crt \
-    -keyout /etc/ssl/private/exampleMail.key
+    -keyout /etc/ssl/private/exampleMail.key`
 ```
 
 ```
