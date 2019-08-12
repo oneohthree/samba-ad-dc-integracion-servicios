@@ -356,14 +356,15 @@ klist
 
 ## Configuración del servidor Bind9 DNS
 
-Durante el aprovisionamiento se utilizó el `dns-backend=SAMBA_INTERNAL`, que provee un servidor DNS interno del paquete Samba; aunque funcional en un entorno básico, tiene determinadas desventajas, como son la asignación de servidores `DNS forwarders` y una caché de resolución lenta. Para suplir estas carencias, se instalará Bind9 integrándolo a Samba.
+Durante el aprovisionamiento se utilizó el `dns-backend=SAMBA_INTERNAL`, que provee un servidor DNS interno del paquete Samba; aunque funcional en un entorno básico, tiene determinadas desventajas, como son la asignación de servidores DNS reenviadores y una caché de resolución lenta. Para suplir estas carencias, se instalará Bind9 integrándolo a Samba.
 
 ### Integración con Samba AD DC
 
 Editar el fichero `/etc/samba/smb.conf` y en la sección `[global]` añadir las directivas:
 
 ```
-server services = -dns` y `nsupdate command = /usr/bin/nsupdate -g
+server services = -dns
+nsupdate command = /usr/bin/nsupdate -g
 ```
 
 Comentar ó eliminar la directiva `dns forwarder = 127.0.0.1`.
