@@ -932,9 +932,7 @@ Crear certificado de seguridad TLS/SSL.
 ```
 cp /etc/ejabberd/ejabberd.pem{,.org}`
 openssl req -x509 -nodes -days 3650 -sha512 \
-    -subj "/C=CU/ST=Provincia/L=Ciudad/\
-        O=EXAMPLE TLD/OU=IT/CN=jb.example.tld/\
-        emailAddress=postmaster@example.tld/" \
+    -subj "/C=CU/ST=Provincia/L=Ciudad/O=EXAMPLE TLD/OU=IT/CN=jb.example.tld/\emailAddress=postmaster@example.tld/" \
     -newkey rsa:4096 \
     -out /tmp/exampleJabber.crt \
     -keyout /tmp/exampleJabber.key
