@@ -1018,7 +1018,7 @@ auth_password_format: scram
 fqdn: "jb.example.tld"
 auth_method: ldap
 ldap_servers:
-- "dc.example.tld"
+  - "dc.example.tld"
 ldap_encrypt: none
 ldap_port: 389
 ldap_rootdn: "ejabberd@example.tld"
