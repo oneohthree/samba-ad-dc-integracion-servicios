@@ -1041,8 +1041,7 @@ mod_shared_roster_ldap:
   ldap_useruid: "sAMAccountName"
   ldap_userdesc: "cn"
   ldap_rfilter: "(objectClass=user)"
-  ldap_filter: "(&(objectClass=person)\
-    (!(userAccountControl:1.2.840.113556.1.4.803:=2)))"
+  ldap_filter: "(&(objectClass=person)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))"
 ```
 
 ### Personalizar vCard de los usuarios
