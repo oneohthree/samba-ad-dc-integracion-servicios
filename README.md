@@ -22,7 +22,7 @@
 - [Configuración del servidor Bind9 DNS](#configuración-del-servidor-bind9-dns)
   - [Integración con Samba AD DC](#integración-con-samba-ad-dc)
   - [Modificación del aprovisionamiento AD DC](#modificación-del-aprovisionamiento-ad-dc)
-  - [Creación de zona inversa y registro PTR del servidor.](#creación-de-zona-inversa-y-registro-ptr-del-servidor)
+  - [Creación de zona inversa y registro PTR del servidor](#creación-de-zona-inversa-y-registro-ptr-del-servidor)
   - [Comprobaciones](#comprobaciones-1)
 - [Configuración del servidor NTP](#configuración-del-servidor-ntp)
   - [Integración con Samba AD DC](#integración-con-samba-ad-dc-1)
@@ -504,7 +504,7 @@ Reiniciar los servicios.
 systemctl restart samba-ad-dc bind9
 ```
 
-### Creación de zona inversa y registro PTR del servidor.
+### Creación de zona inversa y registro PTR del servidor
 
 ```
 samba-tool dns zonecreate localhost 0.168.192.in-addr.arpa -U 'administrator'%'P@s$w0rd.123'
