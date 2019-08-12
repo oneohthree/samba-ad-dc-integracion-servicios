@@ -52,7 +52,7 @@
   - [Configuración de Postfix](#configuración-de-postfix)
   - [Comprobaciones](#comprobaciones-7)
   - [Configuración del servicio Dovecot](#configuración-del-servicio-dovecot)
-  - [Integrar con Samba AD DC. (Ver Anexos para una visión general del fichero de configuración).](#integrar-con-samba-ad-dc-ver-anexos-para-una-visión-general-del-fichero-de-configuración)
+  - [Integrar con Samba AD DC](#integrar-con-samba-ad-dc)
   - [Configuración del servicio Roundcube](#configuración-del-servicio-roundcube)
 - [Comandos y herramientas útiles](#comandos-y-herramientas-útiles)
   - [Consideraciones finales](#consideraciones-finales)
@@ -1420,7 +1420,7 @@ exit 0
 chmod +x /usr/local/bin/quota-warning
 ```
 
-### Integrar con Samba AD DC. (Ver Anexos para una visión general del fichero de configuración).
+### Integración con Samba AD DC
 
 `nano /etc/dovecot/dovecot.conf`
 
@@ -1463,7 +1463,7 @@ systemctl restart dovecot.service
 
 ### Configuración del servicio Roundcube
 
-Integrar con Samba AD DC. (Ver Anexos para una visión general del fichero de configuración).
+## Integración con Samba AD DC
 
 `nano /opt/roundcube/config/config.inc.php`
 
