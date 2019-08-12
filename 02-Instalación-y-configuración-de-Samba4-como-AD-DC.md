@@ -1,6 +1,6 @@
 # Instalación y configuración de Samba4 como AD DC
 
-La distribución de Debian 9 Stretch cuenta en su repositorio de paquetes con la versión de Samba 4.5.16, la cual no contiene algunas mejoras como la creación de Unidades Organizativas, es por ello que se recomienda usar un repositorio de paquetes de la versión 4.9. En esta guía se usará el que proporciona el grupo francés `Tranquil IT Systems`[AÑADIR REF].
+La distribución de Debian 9 Stretch cuenta en su repositorio de paquetes con la versión de Samba 4.5.16, la cual no contiene algunas mejoras como la creación de Unidades Organizativas, es por ello que se recomienda usar un repositorio de paquetes de la versión 4.9. En esta guía se usará el que proporciona el grupo francés [Tranquil IT Systems](http://samba.tranquil.it/debian/).
 
 ## Instalación de paquetes necesarios
 
