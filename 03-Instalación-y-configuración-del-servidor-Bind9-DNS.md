@@ -1,6 +1,6 @@
 # Instalación y configuración del servidor Bind9 DNS
 
-Durante el aprovisionamiento se utilizó el `dns-backend=SAMBA_INTERNAL`, que provee un servidor DNS interno del paquete Samba; aunque funcional en un entorno básico, tiene determinadas desventajas, como son la asignación de servidores `DNS forwarders` y una caché de resolución lenta. Para suplir estas carencias, se instalará Bind9 integrándolo a Samba.
+Durante el aprovisionamiento se utilizó el `dns-backend=SAMBA_INTERNAL`, que provee un servidor DNS interno del paquete Samba; aunque funcional en un entorno básico, tiene determinadas desventajas, como son la asignación de servidores DNS reenviadores y una caché de resolución lenta. Para suplir estas carencias, se instalará Bind9 integrándolo a Samba.
 
 # Instalación de paquetes necesarios
 
