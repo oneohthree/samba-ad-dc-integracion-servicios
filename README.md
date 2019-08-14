@@ -2,7 +2,7 @@
 
 ## Autores
 
-- Yoel Torres Vazquez - oneohthree
+- Yoel Torres - oneohthree
 - [Ixen Rodríguez Pérez - kurosaki1976](ixenrp1976@gmail.com)
 
 ## Tabla de contenidos
