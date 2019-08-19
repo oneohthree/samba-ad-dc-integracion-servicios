@@ -2,8 +2,8 @@
 
 ## Autores
 
-- [Yoel Torres](https://github.com/oneohthree)
-- [Ixen Rodríguez Pérez](https://github.com/kurosaki1976)
+- [Yoel Torres Vázquez - oneohthree](yoel.torres.v@gmail.com)
+- [Ixen Rodríguez Pérez - kurosaki1976](ixenrp1976@gmail.com)
 
 ## Tabla de contenidos
 
@@ -25,50 +25,65 @@
   - [Configuración de Kerberos](#configuración-de-kerberos)
   - [Comprobaciones](#comprobaciones)
 - [Configuración del servidor Bind9 DNS](#configuración-del-servidor-bind9-dns)
-  - [Instalación de paquetes necesarios](#instalación-de-paquetes-necesarios-1)
   - [Integración con Samba AD DC](#integración-con-samba-ad-dc)
   - [Modificación del aprovisionamiento AD DC](#modificación-del-aprovisionamiento-ad-dc)
   - [Creación de zona inversa y registro PTR del servidor](#creación-de-zona-inversa-y-registro-ptr-del-servidor)
   - [Comprobaciones](#comprobaciones-1)
 - [Configuración del servidor NTP](#configuración-del-servidor-ntp)
-  - [Instalación de paquetes necesarios](#instalación-de-paquetes-necesarios-2)
   - [Integración con Samba AD DC](#integración-con-samba-ad-dc-1)
   - [Comprobaciones](#comprobaciones-2)
 - [Creación de Unidades Organizativas, Grupos y Cuentas de Usuarios](#creación-de-unidades-organizativas-grupos-y-cuentas-de-usuarios)
-  - [Creación de Unidades Organizativas \(Organizational Units - OU\)](#creación-de-unidades-organizativas-organizational-units---ou)
+  - [Creación de Unidades Organizativas (Organizational Units - OU)](#creación-de-unidades-organizativas-organizational-units---ou)
   - [Creación de Grupos](#creación-de-grupos)
   - [Creación de Cuentas de Usuarios](#creación-de-cuentas-de-usuarios)
-- [Creación de Políticas de Grupos \(Group Policy Object - GPO\)](#creación-de-políticas-de-grupos-group-policy-object---gpo)
+- [Creación de Políticas de Grupos (Group Policy Object - GPO)](#creación-de-políticas-de-grupos-group-policy-object---gpo)
   - [Comprobaciones](#comprobaciones-3)
 - [Instalación y configuración de Squid Proxy e integración con Samba AD DC](#instalación-y-configuración-de-squid-proxy-e-integración-con-samba-ad-dc)
-  - [Instalación de paquetes necesarios](#instalación-de-paquetes-necesarios-3)
+  - [Instalación de paquetes necesarios](#instalación-de-paquetes-necesarios-1)
   - [Integración con Samba AD DC](#integración-con-samba-ad-dc-2)
   - [Comprobaciones](#comprobaciones-4)
 - [Instalación y configuración de eJabberd XMPP Server e integración con Samba AD DC](#instalación-y-configuración-de-ejabberd-xmpp-server-e-integración-con-samba-ad-dc)
-  - [Instalación de paquetes necesarios](#instalación-de-paquetes-necesarios-4)
+  - [Instalación de paquetes necesarios](#instalación-de-paquetes-necesarios-2)
   - [Creación de registros DNS](#creación-de-registros-dns)
   - [Comprobaciones](#comprobaciones-5)
   - [Integración con Samba AD DC](#integración-con-samba-ad-dc-3)
+  - [Configuración del servicio](#configuración-del-servicio)
   - [Compartir el roster de los usuarios](#compartir-el-roster-de-los-usuarios)
   - [Personalizar vCard de los usuarios](#personalizar-vcard-de-los-usuarios)
   - [Comprobaciones](#comprobaciones-6)
 - [Instalación y configuración de Postfix/Dovecot Mail Server e integración con Samba AD DC.](#instalación-y-configuración-de-postfixdovecot-mail-server-e-integración-con-samba-ad-dc)
-  - [Instalación de paquetes necesarios](#instalación-de-paquetes-necesarios-5)
+  - [Instalación de paquetes necesarios](#instalación-de-paquetes-necesarios-3)
   - [Configuración del sistema](#configuración-del-sistema)
   - [Integración con Samba AD DC](#integración-con-samba-ad-dc-4)
   - [Configuración de Postfix](#configuración-de-postfix)
   - [Comprobaciones](#comprobaciones-7)
   - [Configuración del servicio Dovecot](#configuración-del-servicio-dovecot)
-  - [Integración con Samba AD DC](#integración-con-samba-ad-dc-5)
+  - [Integrar con Samba AD DC](#integrar-con-samba-ad-dc)
   - [Configuración del servicio Roundcube](#configuración-del-servicio-roundcube)
-- [Integración con Samba AD DC](#integración-con-samba-ad-dc-6)
 - [Comandos y herramientas útiles](#comandos-y-herramientas-útiles)
-  - [Consideraciones finales](#consideraciones-finales)
+- [Consideraciones finales](#consideraciones-finales)
 - [Referencias](#referencias)
   - [Samba AD DC+Bind9 DNS Server](#samba-ad-dcbind9-dns-server)
   - [Squid Proxy Server](#squid-proxy-server-2)
   - [eJabberd XMPP Server](#ejabberd-xmpp-server-2)
   - [Postfix/Dovecot/Roundcube Mail Server](#postfixdovecotroundcube-mail-server-2)
+- [Anexos](#anexos)
+  - [Ficheros de configuración prinicipal Squid+Samba AD DC]
+    - [Debian 9 Stretch Squid 3.5](confs/proxy/squid/squid-3.5.conf)
+    - [Debian 10 Buster Squid 4.6](confs/proxy/squid/squid-4.6.conf)
+  - [Ficheros de configuración prinicipal eJabberd+Samba AD DC]
+    - [Debian 9 Stretch eJabberd 16.09](confs/xmpp/ejabberd/ejabberd-16.09.yml)
+    - [Debian 10 Buster eJabberd 18.12](confs/xmpp/ejabberd/ejabberd-18.12.yml)
+  - [Ficheros de configuración prinicipal Postfix+Samba AD DC]
+    - [Configuración general](conf/mail/postfix/main.cf)
+    - [Configuración de servicios](conf/mail/postfix/master.cf)
+  - [Ficheros de configuración prinicipal Dovecot+Samba AD DC]
+    - [Debian 9 Stretch Dovecot 2.2](conf/mail/dovecot/dovecot-2.2.conf)
+    - [Debian 10 Buster Dovecot 2.3](conf/mail/dovecot/dovecot-2.3.conf)
+  - [Fichero de configuración prinicipal Roundcube+Samba AD DC](conf/www/roundcube/config.inc.php)
+  - [Ficheros de publicación web Roundcube]
+    - [Servidor Web Nginx](conf/www/nginx/roundcube)
+    - [Servidor Web Apache](conf/www/apache2/roundcube.conf)
 
 ## Consideraciones previas
 
@@ -97,9 +112,9 @@ Tendiendo en cuenta esto, se pautan las siguientes premisas:
 
 ### Samba AD DC Server
 
-`nano /etc/network/interfaces`
-
 ```
+nano /etc/network/interfaces
+
 auto lo
 iface lo inet loopback
 
@@ -111,25 +126,25 @@ iface enp0s3 inet static
     dns-search example.tld
 ```
 
-`nano /etc/hosts`
-
 ```
+nano /etc/hosts
+
 127.0.0.1       localhost
 192.168.0.1     dc.example.tld      dc
 ```
 
-`nano /etc/resolv.conf`
-
 ```
+nano /etc/resolv.conf
+
 domain example.tld
 nameserver 127.0.0.1
 ```
 
 ### Squid Proxy Server
 
-`nano /etc/network/interfaces`
-
 ```
+nano /etc/network/interfaces
+
 auto lo
 iface lo inet loopback
 
@@ -141,13 +156,15 @@ iface enp0s3 inet static
     dns-search example.tld
 ```
 
-`nano /etc/hosts`
-
 ```
+nano /etc/hosts
+
 127.0.0.1       localhost
 192.168.0.2     proxy.example.tld      proxy
+```
 
-`nano /etc/resolv.conf`
+```
+nano /etc/resolv.conf
 
 domain example.tld
 nameserver 192.168.0.1
@@ -155,9 +172,9 @@ nameserver 192.168.0.1
 
 ### eJabberd XMPP Server
 
-`nano /etc/network/interfaces`
-
 ```
+nano /etc/network/interfaces
+
 auto lo
 iface lo inet loopback
 
@@ -169,25 +186,25 @@ iface enp0s3 inet static
     dns-search example.tld
 ```
 
-`nano /etc/hosts`
-
 ```
+nano /etc/hosts
+
 127.0.0.1       localhost
 192.168.0.3     jb.example.tld      jb
 ```
 
-`nano /etc/resolv.conf`
-
 ```
+nano /etc/resolv.conf
+
 domain example.tld
 nameserver 192.168.0.1
 ```
 
 ### Postfix/Dovecot/Roundcube Mail Server
 
-`nano /etc/network/interfaces`
-
 ```
+nano /etc/network/interfaces
+
 auto lo
 iface lo inet loopback
 
@@ -199,16 +216,16 @@ iface enp0s3 inet static
     dns-search example.tld
 ```
 
-`nano /etc/hosts`
-
 ```
+nano /etc/hosts
+
 127.0.0.1       localhost
 192.168.0.4     mail.example.tld      mail
 ```
 
-`nano /etc/resolv.conf`
-
 ```
+nano /etc/resolv.conf
+
 domain example.tld
 nameserver 192.168.0.1
 ```
@@ -271,7 +288,7 @@ journalctl --since -1h -u systemd-timesyncd
 
 ## Instalación y configuración de Samba4 como AD DC
 
-Las distribuciones de Debian 9/10 cuentan en sus repositorios de paquetes con las versiones de Samba 4.5.16 y 4.9.5, respectivamente; las cuales no contienen algunas mejoras para la gestión de Unidades Organizativas mediante la herramienta `samba-tool`. Es por ello que se recomienda usar un repositorio de paquetes de la versión 4.9.6 o superior. En esta guía se usará el que proporciona el grupo francés [Tranquil IT Systems](http://samba.tranquil.it/debian/).
+Las distribucións de Debian 9/10 cuentan en sus repositorios de paquetes con las versiones de Samba 4.5.16 y 4.9.5, respectivamente; las cuales no contienen algunas mejoras para la gestión de Unidades Organizativas mediante la herramienta `samba-tool`. Es por ello que se recomienda usar un repositorio de paquetes de la versión 4.9.6 o superior. En esta guía se usará el que proporciona el grupo francés [Tranquil IT Systems](http://samba.tranquil.it/debian/).
 
 ### Instalación de paquetes necesarios
 
@@ -279,7 +296,7 @@ Deshabilitar la interacción de configuración y proceder con la instalación de
 
 ```
 export DEBIAN_FRONTEND=noninteractive
-apt install samba krb5-user winbind libnss-winbind
+apt install samba krb5-user winbind libnss-winbind net-tools bind9 dnsutils ntpdate ntp
 unset DEBIAN_FRONTEND
 ```
 
@@ -288,8 +305,8 @@ unset DEBIAN_FRONTEND
 Detener y deshabilitar todos los servicios relacionados con Samba.
 
 ```
-systemctl stop samba-ad-dc smbd nmbd winbind
-systemctl disable samba-ad-dc smbd nmbd winbind
+systemctl stop samba-ad-dc smbd nmbd winbind bind9
+systemctl disable samba-ad-dc smbd nmbd winbind bind9
 ```
 
 Opcionalmente se puede hacer una copia del archivo de configuración inicial de Samba ya que se sobrescribe durante el aprovisionamiento.
@@ -323,9 +340,9 @@ samba-tool domain provision \
 
 Editar el fichero `/etc/samba/smb.conf` resultante.
 
-`nano /etc/samba/smb.conf`
-
 ```
+nano /etc/samba/smb.conf
+
 [global]
     dns forwarder = 127.0.0.1
     netbios name = DC
@@ -346,6 +363,7 @@ Editar el fichero `/etc/samba/smb.conf` resultante.
     create mask = 0700
     directory mask = 0644
 ```
+
 La directiva `ldap server require strong auth = no` en la sección `[global]` se utiliza para permitir el acceso por el puerto `tcp\389`.
 
 Las directivas `create mask = 0700` y `directory mask = 0644` en las secciones `[netlogon]` y `[sysvol]` son para la correcta asignación de permisos tanto a ficheros como directorios.
@@ -359,10 +377,11 @@ Utilizar el fichero configuración de Kerberos generada durante el aprovisionami
 ```
 mv /etc/krb5.conf{,.org}
 ln -s /var/lib/samba/private/krb5.conf /etc/krb5.conf
-nano /etc/krb5.conf
 ```
 
 ```
+nano /etc/krb5.conf
+
 [libdefaults]
     default_realm = EXAMPLE.TLD
     dns_lookup_realm = false
@@ -428,18 +447,13 @@ klist
 
 Durante el aprovisionamiento se utilizó el `dns-backend=SAMBA_INTERNAL`, que provee un servidor DNS interno del paquete Samba; aunque funcional en un entorno básico, tiene determinadas desventajas, como son la asignación de servidores `DNS forwarders` y una caché de resolución lenta. Para suplir estas carencias, se instalará Bind9 integrándolo a Samba.
 
-### Instalación de paquetes necesarios
-
-```
-apt install bind9 dnsutils net-tools
-```
-
 ### Integración con Samba AD DC
 
 Editar el fichero `/etc/samba/smb.conf` y en la sección `[global]` añadir las directivas:
 
 ```
-server services = -dns` y `nsupdate command = /usr/bin/nsupdate -g
+server services = -dns
+nsupdate command = /usr/bin/nsupdate -g
 ```
 
 Comentar ó eliminar la directiva `dns forwarder = 127.0.0.1`.
@@ -450,10 +464,11 @@ Definir Bind9 como dns-backend.
 
 ```
 mv /etc/bind/named.conf.local{,.org}
-nano /etc/bind/named.conf.local
 ```
 
 ```
+nano /etc/bind/named.conf.local
+
 dlz "samba4" {
     database "dlopen /usr/lib/x86_64-linux-gnu/samba/bind9/dlz_bind9_10.so";
 };
@@ -463,10 +478,11 @@ dlz "samba4" {
 samba_upgradedns --dns-backend=BIND9_DLZ
 chown bind /var/lib/samba/private/dns.keytab
 mv /etc/bind/named.conf.options{,.org}
-nano /etc/bind/named.conf.options
 ```
 
 ```
+nano /etc/bind/named.conf.options
+
 options {
     directory "/var/cache/bind";
     forwarders { 8.8.8.8; 8.8.4.4; };
@@ -482,17 +498,18 @@ options {
 
 ```
 mv /etc/default/bind9{,.org}
-nano /etc/default/bind9
 ```
 
 ```
+nano /etc/default/bind9
+
 RESOLVCONF=no
 OPTIONS="-4 -u bind"
 ```
 
-`nano /var/lib/samba/private/named.conf.update`
-
 ```
+nano /var/lib/samba/private/named.conf.update
+
 grant *.example.tld wildcard *.0.168.192.in-addr.arpa. PTR TXT;
 grant local-ddns zonesub any;
 ```
@@ -501,6 +518,7 @@ Reiniciar los servicios.
 
 ```
 systemctl restart samba-ad-dc bind9
+systemctl enable bind9
 ```
 
 ### Creación de zona inversa y registro PTR del servidor
@@ -540,20 +558,15 @@ samba_dnsupdate --verbose --all-names
 
 El servidor Samba AD DC actuará como servidor de tiempo (Network Time Protocol Server - NTP Server) propiciando la sincronización de los relojes de los hosts y sistemas informáticos existentes en su entorno de red.
 
-### Instalación de paquetes necesarios
-
-```
-apt install ntpdate ntp
-```
-
 ### Integración con Samba AD DC
 
 ```
 mv /etc/ntp.conf{,.org}
-nano /etc/ntp.conf
 ```
 
 ```
+nano /etc/ntp.conf
+
 driftfile /var/lib/ntp/ntp.drift
 logfile /var/log/ntpd.log
 statistics loopstats peerstats clockstats
@@ -571,6 +584,7 @@ restrict 127.0.0.1
 restrict ::1
 restrict source notrap nomodify noquery
 broadcast 192.168.0.255
+panic 0
 ```
 
 Establecer permisos.
@@ -706,7 +720,7 @@ samba-tool user create 'sheldon' 'Amy*123' \
     --department='PHYSICS' \
     --company='EXAMPLE' \
     --description='Intranet Access Account' \
-    --mail='sheldon@example.tld'`
+    --mail='sheldon@example.tld'
 ```
 
 ```
@@ -759,10 +773,11 @@ Configuración de Kerberos.
 
 ```
 mv /etc/krb5.conf{,.org}
-nano /etc/krb5.conf
 ```
 
 ```
+nano /etc/krb5.conf
+
 [libdefaults]
     default_realm = EXAMPLE.TLD
     dns_lookup_realm = false
@@ -819,9 +834,9 @@ msktutil --auto-update --verbose --computer-name proxy
 
 Agregar en crontab.
 
-`nano /etc/contrab`
-
 ```
+nano /etc/contrab
+
 59 23 * * * root msktutil --auto-update --verbose --computer-name proxy > /dev/null 2>&1
 ```
 
@@ -836,18 +851,15 @@ samba-tool user create 'squid3' 'P@s$w0rd.789' \
     --surname='Proxy Service' \
     --given-name='Squid3' \
     --company='EXAMPLE' \
-    --description='Squid3 Proxy Service Account
-```
-
-```
+    --description='Squid3 Proxy Service Account'
 samba-tool user setexpiry squid3 --noexpiry
 ```
 
 Editar el fichero `/etc/squid/squid.conf` y agregar los métodos de autenticación.
 
-`nano /etc/squid/squid.conf`
-
 ```
+nano /etc/squid/squid.conf
+
 # OPTIONS FOR AUTHENTICATION
 # ---------------------------------------------------------------------
 # Kerberos authentication
@@ -935,13 +947,34 @@ apt install ejabberd ejabberd-contrib erlang-eldap
 Crear certificado de seguridad TLS/SSL.
 
 ```
-cp /etc/ejabberd/ejabberd.pem{,.org}`
+mv /etc/ejabberd/ejabberd.pem{,.org}
+```
+
+Para Debian 9 Stretch.
+
+```
 openssl req -x509 -nodes -days 3650 -sha512 \
-    -subj "/C=CU/ST=Provincia/L=Ciudad/O=EXAMPLE TLD/OU=IT/CN=jb.example.tld/emailAddress=postmaster@example.tld/" \
+    -subj "/C=CU/ST=Provincia/L=Ciudad/O=EXAMPLE TLD/OU=IT/CN=example.tld/emailAddress=postmaster@example.tld/" \
+    -reqexts SAN -extensions SAN \-config <(cat /etc/ssl/openssl.cnf \
+        <(printf "\n[SAN]\nsubjectAltName=DNS:jb.example.tld,\
+        DNS:conference.example.tld,DNS:echo.example.tld,\
+        DNS:pubsub.example.tld,IP:192.168.0.3")) \
     -newkey rsa:4096 \
     -out /tmp/exampleJabber.crt \
     -keyout /tmp/exampleJabber.key
-openssl dhparam -out /etc/ejabberd/dh2048.pem 2048
+openssl dhparam -out /etc/ssl/dh2048.pem 2048
+```
+
+Para Debian 10 Buster.
+
+```
+openssl req -x509 -nodes -days 3650 -sha512 \
+    -subj "/C=CU/ST=Provincia/L=Ciudad/O=EXAMPLE TLD/OU=IT/CN=example.tld/emailAddress=postmaster@example.tld/" \
+    -addext "subjectAltName = DNS:jb.example.tld,DNS:conference.example.tld,DNS:echo.example.tld,DNS:pubsub.example.tld,IP:192.168.0.3" \
+    -newkey rsa:4096 \
+    -out /tmp/exampleJabber.crt \
+    -keyout /tmp/exampleJabber.key
+openssl dhparam -out /etc/ssl/dh2048.pem 2048
 ```
 
 ```
@@ -993,7 +1026,7 @@ listen:
     resend_on_timeout: if_offline
     tls_compression: false
     starttls_required: true
-    dhfile: "/etc/ejabberd/dh2048.pem"
+    dhfile: "/etc/ssl/dh2048.pem"
 disable_sasl_mechanisms: "digest-md5"
 ```
 
@@ -1004,8 +1037,6 @@ hosts:
   - "example.tld"
 certfiles:
   - "/etc/ejabberd/ejabberd.pem"
-dhfile:
-  - "/etc/ejabberd/dh2048.pem"
 define_macro:
   'TLS_CIPHERS': "HIGH:!aNULL:!eNULL:!3DES:@STRENGTH"
   'TLS_OPTIONS':
@@ -1014,10 +1045,13 @@ define_macro:
     - "no_tlsv1_1"
     - "cipher_server_preference"
     - "no_compression"
+  'DH_FILE': "/etc/ssl/dh2048.pem"
 c2s_ciphers: 'TLS_CIPHERS'
 s2s_ciphers: 'TLS_CIPHERS'
 c2s_protocol_options: 'TLS_OPTIONS'
 s2s_protocol_options: 'TLS_OPTIONS'
+c2s_dhfile: 'DH_FILE'
+s2s_dhfile: 'DH_FILE'
 listen:
   -
     port: 5222
@@ -1039,6 +1073,8 @@ disable_sasl_mechanisms:
 samba-tool dns add localhost example.tld jb A '192.168.0.3' -U 'administrator'%'P@s$w0rd.123'
 samba-tool dns add localhost 0.168.192.in-addr.arpa 3 PTR 'jb.example.tld.' -U 'administrator'%'P@s$w0rd.123'
 samba-tool dns add localhost example.tld conference CNAME 'jb.example.tld' -U 'administrator'%'P@s$w0rd.123'
+samba-tool dns add localhost example.tld echo CNAME 'jb.example.tld' -U 'administrator'%'P@s$w0rd.123'
+samba-tool dns add localhost example.tld pubsub CNAME 'jb.example.tld' -U 'administrator'%'P@s$w0rd.123'
 samba-tool dns add localhost example.tld _xmpp-client._tcp SRV 'jb.example.tld 5222 5 0' -U 'administrator'%'P@s$w0rd.123'
 samba-tool dns add localhost example.tld _xmpp-server._tcp SRV 'jb.example.tld 5269 5 0' -U 'administrator'%'P@s$w0rd.123'
 ```
@@ -1063,24 +1099,23 @@ samba-tool user create 'ejabberd' 'P@s$w0rd.012' \
     --given-name='eJabberd' \
     --company='EXAMPLE' \
     --description='eJabberd XMPP Service Account'
-```
-
-```
 samba-tool user setexpiry ejabberd --noexpiry
 ```
 
+### Configuración del servicio.
+
 Definir cuenta de usuario con acceso administrativo al servicio.
 
-`nano /etc/ejabberd/ejabberd.yml`
-
 ```
+nano /etc/ejabberd/ejabberd.yml
+
 acl:
   admin:
     user:
       - "john.doe@example.tld"
 ```
 
-Editar el fichero `/etc/ejabberd/ejabberd.yml` de forma tal que las opciones de la sección `AUTHENTICATION` queden como sigue:
+Definir método de autenticación.
 
 ```
 auth_password_format: scram
@@ -1115,10 +1150,40 @@ mod_shared_roster_ldap:
 
 ### Personalizar vCard de los usuarios
 
-Editar el fichero `/etc/ejabberd/ejabberd.yml` y añadir en la sección `MODULES`, debajo de la opción `mod_time: {}`, el siguiente contenido:
+Editar el fichero `/etc/ejabberd/ejabberd.yml` y añadir en la sección `MODULES`, el siguiente contenido:
+
+Para Debian 9 Stretch.
 
 ```
 mod_vcard_ldap:
+  ldap_uids: {"sAMAccountName": "%u"}
+  matches: infinity
+  ldap_vcard_map:
+    "NICKNAME": {"%s": ["givenName"]}
+    "FN": {"%s": ["displayName"]}
+    "EMAIL": {"%s": ["mail"]}
+    "GIVEN": {"%s": ["givenName"]}
+    "MIDDLE": {"%s": ["middleName"]}
+    "FAMILY": {"%s": ["sn"]}
+    "ORGNAME": {"%s": ["company"]}
+    "ORGUNIT": {"%s": ["department"]}
+    "TITLE": {"%s": ["title"]}
+    "TEL": {"%s": ["telephoneNumber"]}
+  ldap_search_fields:
+    "User": "%u"
+    "Full Name":  "displayName"
+    "Email": "mail"
+  ldap_search_reported:
+    "Full Name": "FN"
+    "Nickname": "NICKNAME"
+    "Email": "EMAIL"
+```
+
+Para Debian 10 Buster.
+
+```
+mod_vcard:
+  db_type: ldap
   ldap_uids: {"sAMAccountName": "%u"}
   matches: infinity
   ldap_vcard_map:
@@ -1210,7 +1275,7 @@ openssl req -x509 -nodes -days 3650 -sha512 \
         DNS:webmail.example.tld,IP:192.168.0.4" \
     -newkey rsa:4096 \
     -out /etc/ssl/certs/exampleMail.crt \
-    -keyout /etc/ssl/private/exampleMail.key`
+    -keyout /etc/ssl/private/exampleMail.key
 ```
 
 ```
@@ -1235,9 +1300,6 @@ samba-tool user create 'postfix' 'P@s$w0rd.345' \
     --given-name='Postfix' \
     --company='EXAMPLE' \
     --description='Mail Service Account'
-```
-
-```
 samba-tool user setexpiry postfix --noexpiry
 ```
 
@@ -1251,9 +1313,6 @@ samba-tool user create 'archive' 'P@s$w0rd.678' \
     --company='ACME' \
     --description='Archive Mail Storage Account' \
     --mail='archive@example.tld'
-```
-
-```
 samba-tool user setexpiry archive --noexpiry
 ```
 
@@ -1327,9 +1386,9 @@ Definir usuarios virtuales de correo electrónico.
 postconf -e "smtpd_sender_login_maps = proxy:ldap:/etc/postfix/virtual_sender_login_maps.cf"
 ```
 
-`nano /etc/postfix/virtual_sender_login_maps.cf`
-
 ```
+nano /etc/postfix/virtual_sender_login_maps.cf
+
 server_host = dc.example.tld
 server_port = 389
 version = 3
@@ -1360,9 +1419,9 @@ postconf -e "virtual_mailbox_base = /var/vmail"
 postconf -e "virtual_mailbox_maps = proxy:ldap:/etc/postfix/virtual_mailbox_maps.cf"
 ```
 
-`nano /etc/postfix/virtual_mailbox_maps.cf`
-
 ```
+nano /etc/postfix/virtual_mailbox_maps.cf
+
 server_host = dc.example.tld
 server_port = 389
 version = 3
@@ -1381,14 +1440,12 @@ debuglevel = 0
 Definir listas y aliases virtuales de correo electrónico.
 
 ```
-postconf -e "virtual_alias_maps = \
-    proxy:ldap:/etc/postfix/virtual_list_maps.cf, \
-    proxy:ldap:/etc/postfix/virtual_alias_maps.cf"
+postconf -e "virtual_alias_maps = proxy:ldap:/etc/postfix/virtual_list_maps.cf, proxy:ldap:/etc/postfix/virtual_alias_maps.cf"
 ```
 
-`nano /etc/postfix/virtual_list_maps.cf`
-
 ```
+nano /etc/postfix/virtual_list_maps.cf
+
 server_host = dc.example.tld
 server_port = 389
 version = 3
@@ -1403,9 +1460,9 @@ result_attribute = userPrincipalName
 debuglevel = 0
 ```
 
-`nano /etc/postfix/virtual_alias_maps.cf`
-
 ```
+nano /etc/postfix/virtual_alias_maps.cf
+
 server_host = dc.example.tld
 server_port = 389
 version = 3
@@ -1424,9 +1481,9 @@ NOTA: El atributo `otherMailbox` puede editarse utilizando el comando `samba-too
 
 Habilitar puerto seguro `TCP\587 Submission` y establecer comunicación con `dovecot`.
 
-`nano /etc/postfix/master.cf`
-
 ```
+nano /etc/postfix/master.cf
+
 submission inet n - y - 10 smtpd
     -o syslog_name=postfix/submission
     -o smtpd_tls_security_level=encrypt
@@ -1457,14 +1514,16 @@ systemctl restart postfix.service
 
 * Realizar salva de seguridad del fichero de configuración principal.
 
-`cp /etc/dovecot/dovecot.conf{,.org}`
+```
+cp /etc/dovecot/dovecot.conf{,.org}
+```
 
 * Crear script de alerta de sobreuso de cuota y asignar permiso
   de ejecución.
 
-`nano /usr/local/bin/quota-warning`
-
 ```
+nano /usr/local/bin/quota-warning
+
 #!/bin/bash
 
 PERCENT=${1}
@@ -1493,9 +1552,9 @@ chmod +x /usr/local/bin/quota-warning
 
 ### Integración con Samba AD DC
 
-`nano /etc/dovecot/dovecot.conf`
-
 ```
+nano /etc/dovecot/dovecot.conf
+
 userdb {
     args = /etc/dovecot/dovecot-ldap.conf
     driver = ldap
@@ -1506,9 +1565,9 @@ passdb {
 }
 ```
 
-`nano /etc/dovecot/dovecot-ldap.conf`
-
 ```
+nano /etc/dovecot/dovecot-ldap.conf
+
 hosts = dc.example.tld:389
 auth_bind = yes
 ldap_version = 3
@@ -1536,14 +1595,14 @@ systemctl restart dovecot.service
 
 ## Integración con Samba AD DC
 
-`nano /opt/roundcube/config/config.inc.php`
-
 ```
+nano /opt/roundcube/config/config.inc.php
+
 // Samba AD DC Address Book
 $config['autocomplete_addressbooks'] = array(
-                                                'sql',
-                                                'global_ldap_abook'
-                                            );
+    'sql',
+    'global_ldap_abook'
+);
 $config['ldap_public']["global_ldap_abook"] = array(
     'name'              => 'Mailboxes',
     'hosts'             => array('dc.example.tld'),
@@ -1617,7 +1676,7 @@ $config['ldap_public']["global_ldap_abook"] = array(
 
 Todas las configuraciones expuestas en esta guía han sido probadas satisfactoriamente -si los pasos descritos se siguen a cabalidad-, en contenedores (CT) y máquinas virtuales (VM), gestionadas con Proxmox v5/v6.
 
-Los CTs que ejecuten servicios que utilicen autenticación Kerberos, deben crearse con las características `nesting fuse` y la opción `Unprivileged mode` desmarcada.
+Los CTs que ejecuten servicios que utilicen autenticación Kerberos, deben crearse con las características `fuse` y la opción `Unprivileged mode` desmarcada.
 
 En CTs para que el servidor Samba AD DC funcione correctamente; además de lo descrito en el párrafo anterior, debe activarse la característica `cifs`.
 
