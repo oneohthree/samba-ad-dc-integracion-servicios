@@ -630,7 +630,7 @@ restrict 127.0.0.1
 restrict ::1
 restrict source notrap nomodify noquery
 broadcast 192.168.0.255
-panic 0
+tinker panic 0
 ```
 
 Establecer permisos.
