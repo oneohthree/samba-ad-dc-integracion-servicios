@@ -67,10 +67,11 @@
 - [Comandos y herramientas útiles](#comandos-y-herramientas-útiles)
 - [Consideraciones finales](#consideraciones-finales)
 - [Referencias](#referencias)
-  - [Samba AD DC+Bind9 DNS Server](#samba-ad-dcbind9-dns-server)
+  - [Samba AD DC+Bind9 DNS Server+DHCP](#samba-ad-dcbind9-dns-serverdhcp)
   - [Squid Proxy Server](#squid-proxy-server-2)
   - [eJabberd XMPP Server](#ejabberd-xmpp-server-2)
   - [Postfix/Dovecot/Roundcube Mail Server](#postfixdovecotroundcube-mail-server-2)
+  - [Proxmox VE](#proxmox-ve)
 - [Anexos](#anexos)
   - [Ficheros de configuración prinicipal Squid+Samba AD DC]
     - [Debian 9 Stretch Squid 3.5](confs/proxy/squid/squid-3.5.conf)
@@ -111,6 +112,8 @@ Tendiendo en cuenta esto, se pautan las siguientes premisas:
 * Dirección IP Postfix/Dovecot/Roundcube Mail Server: `192.168.0.4`
 * Nombre de dominio: `example.tld`
 * Los hosts miembros del dominio deben usar Samba AD DC como servidor DNS y de tiempo.
+
+> **NOTA**: La última premisa se logrará mediante la implementación de un servidor `DHCP` que permita las asiganción de parámetros de red dinámicos.
 
 ## Configuración de los parámetros de red
 
@@ -290,6 +293,8 @@ timedatectl status
 journalctl --since -1h -u systemd-timesyncd
 ```
 
+> **NOTA**: Es recomendable hacer coincidir la zona horaria de los `hosts` de acuerdo a la región en cuestión, ejecutando el comando `dpkg-reconfigure tzdata`. En plantillas de contenedores `Debian 9/10`, deben redefinirse los parámetros de idioma, mediante `dpkg-reconfigure locales` y luego de escoger el idioma de preferencia, ejecutar `locale-gen`, y reiniciar el `CT`.
+
 ## Instalación y configuración de Samba4 como AD DC
 
 Las distribucións de Debian 9/10 cuentan en sus repositorios de paquetes con las versiones de Samba 4.5.16 y 4.9.5, respectivamente; las cuales no contienen algunas mejoras para la gestión de Unidades Organizativas mediante la herramienta `samba-tool`. Es por ello que se recomienda usar un repositorio de paquetes de la versión 4.9.6 o superior. En esta guía se usará el que proporciona el grupo francés [Tranquil IT Systems](http://samba.tranquil.it/debian/).
@@ -357,7 +362,6 @@ nano /etc/samba/smb.conf
     workgroup = EXAMPLE
     idmap_ldb:use rfc2307 = yes
     ldap server require strong auth = no
-    log level = 3
     printing = bsd
     printcap name = /dev/null
 [netlogon]
@@ -467,18 +471,17 @@ smbclient //localhost/netlogon -Uadministrator -c 'ls'
 
 ## Configuración del servidor Bind9 DNS
 
-Durante el aprovisionamiento se utilizó el `dns-backend=SAMBA_INTERNAL`, que provee un servidor DNS interno del paquete Samba; aunque funcional en un entorno básico, tiene determinadas desventajas, como son la asignación de servidores `DNS forwarders` y una caché de resolución lenta. Para suplir estas carencias, se instalará Bind9 integrándolo a Samba.
+Durante el aprovisionamiento se utilizó el `dns-backend=SAMBA_INTERNAL`, que provee un servidor `DNS` interno del paquete `Samba`; aunque funcional en un entorno básico, tiene determinadas desventajas, como son la asignación de servidores `DNS forwarders` y una caché de resolución lenta. Para suplir estas carencias, se configurará `Bind9` integrándolo a `Samba`.
 
 ### Integración con Samba AD DC
 
-Editar el fichero `/etc/samba/smb.conf` y en la sección `[global]` añadir las directivas:
+Editar el fichero `/etc/samba/smb.conf` y en la sección `[global]`:
 
-```bash
-server services = -dns
-nsupdate command = /usr/bin/nsupdate -g
-```
+- añadir la directiva `nsupdate command = /usr/bin/nsupdate -g`,
 
-Comentar ó eliminar la directiva `dns forwarder = 127.0.0.1`.
+- modificar la directiva `server services = s3fs, rpc, nbt, wrepl, ldap, cldap, kdc, drepl, winbindd, ntp_signd, kcc, dnsupdate` por `server services = -dns`,
+
+- comentar ó eliminar la directiva `dns forwarder = 127.0.0.1`.
 
 ### Modificación del aprovisionamiento AD DC
 
@@ -514,10 +517,14 @@ options {
     hostname none;
     server-id none;
     directory "/var/cache/bind";
+    max-cache-size 10m;
+    cleaning-interval 15;
+    max-cache-ttl 60;
+    max-ncache-ttl 60;
     forwarders { 8.8.8.8; 8.8.4.4; };
     forward first;
-    dnssec-enable no;
-    dnssec-validation no;
+    dnssec-enable yes;
+    dnssec-validation yes;
     dnssec-lookaside no;
     auth-nxdomain yes;
     listen-on-v6 { none; };
@@ -527,6 +534,7 @@ options {
     allow-update { 192.168.0.0/24; 127.0.0.1; };
     datasize default;
     empty-zones-enable no;
+    minimal-responses yes;
 };
 
 logging {
@@ -587,8 +595,8 @@ Comprobar registros DNS necesarios para el funcionamiento correcto de Samba AD D
 
 ```bash
 dig example.tld
+dig -x 192.168.0.1 @127.0.0.1 +short
 host -t A dc.example.tld
-host 192.168.0.1
 host -t SRV _kerberos._udp.example.tld
 host -t SRV _ldap._tcp.example.tld
 ```
@@ -619,8 +627,8 @@ statistics loopstats peerstats clockstats
 filegen loopstats file loopstats type day enable
 filegen peerstats file peerstats type day enable
 filegen clockstats file clockstats type day enable
-server 127.127.1.1
-fudge 127.127.1.1 stratum 12
+server 127.127.1.0
+fudge 127.127.1.0 stratum 10
 server ntp.tld iburst prefer
 ntpsigndsocket /var/lib/samba/ntp_signd
 restrict -4 default kod notrap nomodify nopeer noquery mssntp
@@ -629,7 +637,8 @@ restrict dc.example.tld mask 255.255.255.255 nomodify notrap nopeer noquery
 restrict 127.0.0.1
 restrict ::1
 restrict source notrap nomodify noquery
-broadcast 192.168.0.255
+broadcast 192.168.0.255 ttl 4
+broadcastdelay 0.004
 tinker panic 0
 ```
 
@@ -663,8 +672,8 @@ apt install isc-dhcp-server
 ```
 
 > **NOTA**: Este método puede afectar funcionalidades en los clientes `Windows`, los cuales tratarán de actualizar los registros `DNS` por sí mismos, utilizando sus cuentas de `hosts`. Para evitar este comportamiento, debe crearse una Política de Grupo y aplicarla a Unidades Organizativas que contengan equipos.
-
-> La GPO debe configurarse con los siguientes parámetros:
+>
+> La `GPO` debe configurarse con los siguientes parámetros:
 
 ```cmd
 Computer Configuration
@@ -699,7 +708,7 @@ chmod 400 /etc/dhcp/dhcpd.keytab
 Crear el fichero `/etc/dhcp/dhcpd-update-samba-dns.conf`, que contendrá las variables a utilizarse para la actualización de los registros `DNS`.
 
 ```bash
-/etc/dhcpd/dhcpd-update-samba-dns.conf
+nano /etc/dhcp/dhcpd-update-samba-dns.conf
 
 # Variables
 KRB5CC="/run/dhcpd.krb5cc"
@@ -1020,7 +1029,7 @@ chmod +x /etc/dhcp/dhcpd-update-dns.sh /usr/bin/samba-dnsupdate.sh
 Crear fichero principal del servicio `DHCP`.
 
 ```bash
-mv /etc/dhcp/dhcpd.conf
+mv /etc/dhcp/dhcpd.conf{,.org}
 ```
 
 ```bash
@@ -1069,14 +1078,13 @@ shared-network EXAMPLE {
       set ClientName = pick-first-value(option host-name, host-decl-name);
       execute("/etc/dhcp/dhcpd-update-dns.sh", "delete", ClientIP, ClientName);
     }
-
   }
 }
 ```
 
 > **NOTA**: Esta configuración asignará direcciones `IP` y actualizará los registros `DNS` para todos los `hosts` que se conecten a la red y que tengan habilitada la obtención de parámetros de red vía `DHCP`.
 
-> Si solo se quisiera asignar parámetros de red a los `hosts` que realmente forman parte de nuestra organización, se puede usar la funcionalidad de clases y subclases, ejemplo:
+Si solo se quisiera asignar parámetros de red a los `hosts` que realmente forman parte de la organización, se puede usar la funcionalidad de clases y subclases, ejemplo:
 
 ```bash
 class "allocation-class-1" {
@@ -1090,7 +1098,7 @@ pool {
 }
 ```
 
-> Otra forma sería definiendo asignaciones estáticas, ejemplo:
+Otra forma sería definiendo asignaciones estáticas, ejemplo:
 
 ```bash
 pool {
@@ -1109,7 +1117,7 @@ pool {
 }
 ```
 
-> También se puede usar la combinación de ambas técnicas, ejemplo:
+También se puede usar la combinación de ambas técnicas, ejemplo:
 
 ```bash
 class "allocation-class-1" {
@@ -1134,7 +1142,7 @@ pool {
 }
 ```
 
-> Idependientemente del método que se adopte, deben conocerse de antemano las direcciones `MAC` de los `hosts`, y establecer la asignación de parámetros de red dentro de la subcláusula `subnet {}` y el rango de direcciones `IP` a asignar, debe estar contenido dentro de la subcláusula `pool {}`, ejemplo:
+Idependientemente del método que se adopte, deben conocerse de antemano las direcciones `MAC` de los `hosts`, y establecer la asignación de parámetros de red dentro de la subcláusula `subnet {}` y el rango de direcciones `IP` a asignar, debe estar contenido dentro de la subcláusula `pool {}`, ejemplo:
 
 ```bash
 nano /etc/dhcp/dhcpd.conf
@@ -1208,14 +1216,14 @@ shared-network EXAMPLE {
 
 ### Comprobaciones
 
-> **NOTA**: Se puede verificar la configuración del servidor `DHCP`, ejecutando el comando `dhcpd -t`.
-
 Reiniciar el servicio y observar las salidas generadas en el fichero de trazas `/var/log/syslog`.
 
 ```bash
 systemctl restart isc-dhcp-server
 tail -fn100 /var/log/syslog
 ```
+
+> **NOTA**: Se puede verificar la configuración del servidor `DHCP`, ejecutando el comando `dhcpd -t`.
 
 ## Creación de Unidades Organizativas, Grupos y Cuentas de Usuarios
 
@@ -1284,7 +1292,7 @@ samba-tool group addmembers 'Group Policy Creator Owners' john.doe
 
 ## Creación de Políticas de Grupos (Group Policy Object - GPO)
 
-En los sistemas operativos Windows, una Política de Grupo (Group Policy Object - GPO) es un conjunto de configuraciones que define cómo debe lucir y comportarse el sistema para usuarios y/ó grupos de usuarios y ordenadores, previamente definidos y agrupados en OUs.
+En los sistemas operativos Windows, una Política de Grupo (`Group Policy Object - GPO`) es un conjunto de configuraciones que define cómo será la apariencia y el comportamiento del sistema, para usuarios y/ó grupos de usuarios y ordenadores, previamente definidos y agrupados en `OUs`.
 
 Configurar almacén central para definiciones de directivas.
 
@@ -1293,7 +1301,7 @@ tar -xzmf PolicyDefinitions.tar.gz -C /var/lib/samba/sysvol/example.tld/Policies
 chown -R 3000004.3000004 /var/lib/samba/sysvol/example.tld/Policies/
 ```
 
-> **NOTA**: El fichero [PolicyDefinitions.tar.gz](confs/addc/PolicyDefinitions.tar.gz) contine definiciones de directivas compatibles con sistemas operativos Windows hasta la versión 1809 de Windows 10. También están incorporadas las definiciones para el navegador Mozilla Firefox versión 62.x y superiores.
+> **NOTA**: El fichero [PolicyDefinitions.tar.gz](confs/addc/PolicyDefinitions.tar.gz) contine definiciones de directivas compatibles con sistemas operativos Windows hasta la versión 1809 de Windows 10. También están incorporadas las definiciones para el navegador Mozilla Firefox versión 60 y superiores; así como el cliente de correo electrónico Thunderbird versión 68 y superiores.
 
 Crear Política de Grupo para actualizaciones dinámicas `DHCP/DNS`.
 
@@ -1465,7 +1473,7 @@ msktutil --auto-update --verbose --computer-name proxy
 Agregar en `crontab`.
 
 ```bash
-nano /etc/contrab
+nano /etc/crontrab
 
 59 23 * * * root msktutil --auto-update --verbose --computer-name proxy > /dev/null 2>&1
 ```
@@ -1477,12 +1485,12 @@ Crear nueva Cuenta de Usuario para el servicio `squid`.
 Esta cuenta sería usada para propiciar la autenticación básica LDAP en caso de fallar Kerberos ó para uso de gestores de descargas no compatibles con Kerberos ó en aquellas estaciones que no están unidas al dominio.
 
 ```bash
-samba-tool user create 'squid3' 'P@s$w0rd.789' \
+samba-tool user create 'squid' 'P@s$w0rd.789' \
     --surname='Proxy Service' \
-    --given-name='Squid3' \
+    --given-name='Squid' \
     --company='EXAMPLE' \
-    --description='Squid3 Proxy Service Account'
-samba-tool user setexpiry squid3 --noexpiry
+    --description='Squid Proxy Service Account'
+samba-tool user setexpiry squid --noexpiry
 ```
 
 Editar el fichero `/etc/squid/squid.conf` y agregar los métodos de autenticación.
@@ -1498,7 +1506,7 @@ auth_param negotiate children 20 startup=0 idle=1
 auth_param negotiate keep_alive off
 
 # Basic LDAP authentication (fallback)
-auth_param basic program /usr/lib/squid/basic_ldap_auth -R -b "dc=example,dc=tld" -D squid3@example.tld -w "P@s$w0rd.789" -f (|(userPrincipalName=%s)(sAMAccountName=%s)) -h dc.example.tld
+auth_param basic program /usr/lib/squid/basic_ldap_auth -R -b "dc=example,dc=tld" -D squid@example.tld -w "P@s$w0rd.789" -f (|(userPrincipalName=%s)(sAMAccountName=%s)) -h dc.example.tld
 auth_param basic children 10
 auth_param basic realm PROXY.EXAMPLE.TLD
 auth_param basic credentialsttl 8 hours
@@ -1517,7 +1525,7 @@ acl internet external INTERNET
 acl unrestricted external UNRESTRICTED
 
 # LDAP group mapping
-external_acl_type memberof %LOGIN /usr/lib/squid/ext_ldap_group_acl -R -K -S -b "dc=example,dc=tld" -D squid3@example.tld -w "P@s$w0rd.789" -f "(&(objectClass=person)(sAMAccountName=%v)(memberof=cn=%g,ou=Proxy,ou=ACME,dc=example,dc=tld))" -h dc.example.tld
+external_acl_type memberof %LOGIN /usr/lib/squid/ext_ldap_group_acl -R -K -S -b "dc=example,dc=tld" -D squid@example.tld -w "P@s$w0rd.789" -f "(&(objectClass=person)(sAMAccountName=%v)(memberof=cn=%g,ou=Proxy,ou=ACME,dc=example,dc=tld))" -h dc.example.tld
 acl LDAPintranet external memberof Intranet
 acl LDAPinternet external memberof Internet
 acl LDAPunrestricted external memberof Unrestricted
@@ -1547,17 +1555,17 @@ Usando autenticación `Kerberos`.
 Usando autenticación básica LDAP.
 
 ```bash
-/usr/lib/squid/basic_ldap_auth -R -b "dc=example,dc=tld" -D squid3@example.tld -w "P@s$w0rd.789" -f sAMAccountName=%s -h dc.example.tld
+/usr/lib/squid/basic_ldap_auth -R -b "dc=example,dc=tld" -D squid@example.tld -w "P@s$w0rd.789" -f sAMAccountName=%s -h dc.example.tld
 ```
 
 Membresía de grupos LDAP.
 
 ```bash
 /usr/lib/squid/ext_ldap_group_acl -R -K -S -b "dc=example,dc=tld" \
-    -D squid3@example.tld -w "P@s$w0rd.789" \
+    -D squid@example.tld -w "P@s$w0rd.789" \
     -f "(&(objectClass=person)(sAMAccountName=%v)\
         (memberof=cn=%g,ou=Proxy,ou=ACME,dc=example,dc=tld))" \
-    -h dc.example.tld`
+    -h dc.example.tld
 ```
 
 Analizando trazas de navegación.
@@ -1734,6 +1742,18 @@ samba-tool user create 'ejabberd' 'P@s$w0rd.012' \
 samba-tool user setexpiry ejabberd --noexpiry
 ```
 
+Crear Grupo de Usuarios de mensajería instantánea.
+
+```bash
+samba-tool group add XMPP --groupou='OU=ACME' --description='XMPP Users Group'
+```
+
+Añadir usuarios al grupo `XMPP`.
+
+```bash
+samba-tool group addmembers 'XMPP' john.doe,sheldon,leonard,rajesh
+```
+
 ### Configuración del servicio.
 
 Definir cuenta de usuario con acceso administrativo al servicio.
@@ -1762,7 +1782,7 @@ ldap_rootdn: "ejabberd@example.tld"
 ldap_password: "P@s$w0rd.012"
 ldap_base: "OU=ACME,DC=example,DC=tld"
 ldap_uids: {"sAMAccountName": "%u"}
-ldap_filter: "(&(objectClass=person)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))"
+ldap_filter: "(&(memberOf=CN=XMPP,OU=ACME,DC=example,DC=tld)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))"
 ```
 
 ### Compartir el roster de los usuarios
@@ -1869,7 +1889,7 @@ tail -fn100 /var/log/ejabberd/ejabberd.log
 
 ```bash
 export DEBIAN_FRONTEND=noninteractive
-apt install postfix-pcre postfix-ldap dovecot-core dovecot-ldap dovecot-pop3d dovecot-imapd dovecot-lmtpd ldap-utils mailutils
+apt install postfix-pcre postfix-ldap postfix-policyd-spf-python dovecot-core dovecot-ldap dovecot-pop3d dovecot-imapd dovecot-lmtpd ldap-utils mailutils
 unset DEBIAN_FRONTEND
 ```
 
@@ -2532,10 +2552,10 @@ $config['ldap_public']["global_ldap_abook"] = array(
 * `RSAT` (herramientas administración servidor remoto `windows`)
 * `Apache Directory Studio` (herramienta administración servicios de directorio `LDAP`)
 * `named-checkconf` (chequeo errores de configuración `bind9`)
-* `squid -kp` (chequeo errores de configuración `squid`)
+* `squid -kc` (chequeo errores de sintáxis configuración `squid`)
 * `postconf` (herramienta principal de configuración `postfix`)
 * `postfix check` (chequeo errores de configuración `postfix`)
-* `dovecot -a` (muestra los parámetros configurados)
+* `doveconf -n` (muestra los parámetros configurados)
 * `nginx -t` (chequeo errores de configuración `nginx`)
 * `apache2ctl configtest` (chequeo errores de configuración `apache2`)
 
@@ -2543,7 +2563,7 @@ $config['ldap_public']["global_ldap_abook"] = array(
 
 Todas las configuraciones expuestas en esta guía han sido probadas satisfactoriamente -si los pasos descritos se siguen a cabalidad-, en contenedores (CT) y máquinas virtuales (VM), gestionadas con Proxmox v5/v6.
 
-Los CTs que ejecuten servicios que utilicen autenticación Kerberos, deben crearse con las características `fuse` y la opción `Unprivileged mode` desmarcada.
+Los CTs que ejecuten servicios que utilicen autenticación Kerberos, deben crearse con las características `fuse`, `nesting` y la opción `Unprivileged mode` desmarcada.
 
 En CTs para que el servidor Samba AD DC funcione correctamente; además de lo descrito en el párrafo anterior, debe activarse la característica `cifs`.
 
@@ -2573,6 +2593,8 @@ La integración de los servicios descritos en esta guía, también son funcional
 * [Samba 4 como Controlador de Dominios AD DC en Debian 9](https://usuariodebian.blogspot.com/2019/04/samba-4-como-controlador-de-dominios-ad.html)
 * [Setting up a Samba 4 Domain Controller on Debian 9](https://jonathonreinhart.com/posts/blog/2019/02/11/setting-up-a-samba-4-domain-controller-on-debian-9/)
 * [Raising the Functional Levels](https://wiki.samba.org/index.php/Raising_the_Functional_Levels)
+* [Samba/Active Directory domain controller - ArchWiki](https://wiki.archlinux.org/index.php/Samba/Active_Directory_domain_controller)
+* [ISC DHCP Server - Debian Wiki](https://wiki.debian.org/DHCP_Server)
 * [How to Configure Group Policy Central Store](https://activedirectorypro.com/configure-group-policy-central-store/)
 * [ Active Directory - Creating a Group Policy Central Store](https://www.petri.com/creating-group-policy-central-store)
 * [GPO Backup and Restore](https://wiki.samba.org/index.php/GPO_Backup_and_Restore)
@@ -2604,6 +2626,9 @@ La integración de los servicios descritos en esta guía, también son funcional
 * [Making ejabberd 14.12 work with Microsoft Windows Active Directory](http://s.co.tt/2015/02/05/making-ejabberd-14-12-work-with-microsoft-windows-active-directory-ldap/)
 * [Remote authentication of users using Active Directory](https://support.freshservice.com/support/solutions/articles/169196-setting-up-active-directory-single-sign-on-sso-for-remote-authentication)
 * [Ejabberd + Samba4 + Shared Roster](https://admlinux.cubava.cu/2019/03/04/ejabberd-samba4-shared-roster/)
+* [Install ejabberd with Active Directory SSO backend](https://twistedlinux.wordpress.com/2016/02/11/install-ejabberd-with-active-directory-sso-backend/)
+* [Authenticate Against SASL GSSAPI](https://www.ejabberd.im/cyrsasl_gssapi/index.html)
+* [Ejabberd with GSSAPI support](https://launchpad.net/~metlov/+archive/ubuntu/ejabberd-gssapi)
 
 ### Postfix/Dovecot/Roundcube Mail Server
 
@@ -2622,3 +2647,11 @@ La integración de los servicios descritos en esta guía, también son funcional
 * [Virtual user mail system with Postfix, Dovecot and Roundcube - ArchWiki](https://wiki.archlinux.org/index.php/Virtual_user_mail_system_with_Postfix,_Dovecot_and_Roundcube)
 * [Postfix with Samba AD-DC – ADHainesTech.ca](http://adhainestech.ca/postfix-with-samba-ad-dc/)
 * [Shared Address Book (LDAP) - Linux Home Server HOWTO](https://www.brennan.id.au/20-Shared_Address_Book_LDAP.html)
+* [Authenticating Dovecot against Active Directory](https://wiki.samba.org/index.php/Authenticating_Dovecot_against_Active_Directory)
+* [Authentication/Kerberos -Dovecot Wiki](https://wiki.dovecot.org/Authentication/Kerberos)
+
+### Proxmox VE
+
+* [apache2.service: Failed to set up mount namespacing: Permission denied](https://forum.proxmox.com/threads/apache2-service-failed-to-set-up-mount-namespacing-permission-denied.56871/)
+* [[SOLVED] Problem LXC mariadb debian 10](https://forum.proxmox.com/threads/problem-lxc-mariadb-debian-10.55926/)
+* [LXC - perl: warning: Setting locale failed](https://forum.proxmox.com/threads/lxc-perl-warning-setting-locale-failed.32173/)
