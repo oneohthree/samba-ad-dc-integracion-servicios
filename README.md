@@ -95,7 +95,7 @@
 Esta guía no presenta configuraciones avanzadas, tales como filtrado de contenido web, técnicas de antispam y antivirus o filtrado de origen y
 destino de email; sino que está enfocada en exponer la integración de servicios vitales -proxy, chat y correo electrónico-, en una red corporativa con el servicio de directorio `Samba AD DC`; aunque pudieran incluirse en futuras revisiones.
 
-Tendiendo en cuenta esto, se pautan las siguientes premisas:
+Teniendo en cuenta esto, se pautan las siguientes premisas:
 
 * Sistema Operativo: Debian GNU/Linux 9/10 (instalación base)
 * Repositorio de paquetes distribución Debian 9/10
