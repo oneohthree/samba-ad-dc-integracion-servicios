@@ -3,7 +3,7 @@
 ## Autores
 
 - [Ixen Rodríguez Pérez - kurosaki1976](ixenrp1976@gmail.com)
-- [Yoel Torres Vázquez - oneohthree](yoel.torres.v@gmail.com)
+- oneohthree
 
 ## Tabla de contenidos
 
